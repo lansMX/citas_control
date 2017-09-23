@@ -27,22 +27,66 @@ class IndexController extends AbstractActionController
 
     public function indexAction()
     {
-
         $this->dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter');
-		$dataUsuario = new Usuarios($this->dbAdapter);            
-            //$postulaciones = $dataRelVaUser->getAll_User($identify['idTab_Usuario']); 
-        $usuario = $dataUsuario->fetchAll();
-		$index['usuario'] = $usuario;
-		// $this->layout()->sesion = $identify;
-        $this->layout('layout/layout');
-        $view = new ViewModel($index);
+		// $dataUsuario = new Usuarios($this->dbAdapter);            
+  //           //$postulaciones = $dataRelVaUser->getAll_User($identify['idTab_Usuario']); 
+  //       $usuario = $dataUsuario->fetchAll();
+		// $index['usuario'] = $usuario;
+        
+  //       $this->layout()->sesion = $identify;
+        $view = new ViewModel();
+        $this->layout('layout/layout');        
+        return $view;
+    }
+
+    public function homeAction(){
+        return new ViewModel();
+    }
+
+    public function verificarAction(){
+        #Obtener datos post
+        $USR = $this->getRequest()->getPost("user");
+        $PWD = $this->getRequest()->getPost("pass");
+
+        #Adaptador
+        $this->dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter');
+
+        #Modelo
+        $DbUsuarios = new Usuarios($this->dbAdapter);
+        $RsUsuario = $DbUsuarios->getAuth($USR, $PWD);        
+
+        if ($RsUsuario) {
+            $ArrayUsuario = [                                     
+                'Id'      => $RsUsuario['idTab_Usuario'], 
+                'Usuario'    => $RsUsuario['Usuario'], 
+                'NombreUsuario' => $RsUsuario['Nombre']
+            ];
+            $identify = $this->auth->getStorage()->write($ArrayUsuario);
+            $rest = [ 'status' => 'success', 'message' => 'Inicio de sesión correcto' ];
+        } else {
+            $rest = [ 'status' => 'error', 'message' => 'Credenciales incorrectas' . $RsUsuario ];
+        }
+
+        $view = new ViewModel(['Json' => json_encode($rest)]);
+        $view->setTemplate('citas/index/json');
+        $view->setTerminal(true);
         return $view;
     }
 
     public function loginAction(){
-    	return new ViewModel();
+        $view = new ViewModel();        
+        $this->layout('layout/layoutVacio');
+        return $view;
     }
 
+    public function logoutAction(){
+        $identify = $this->auth->getStorage()->read();
+
+        if ($identify) {
+            $this->auth->getStorage()->clear();    
+        }   
+        return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/');
+    }
 
 
 }

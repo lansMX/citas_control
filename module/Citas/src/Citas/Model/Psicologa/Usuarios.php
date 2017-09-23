@@ -21,6 +21,10 @@ class Usuarios extends TableGateway
         return $this->adapter->query("SELECT * FROM Tab_Usuarios", Adapter::QUERY_MODE_EXECUTE)->toArray();
     }
 
+    public function getAuth($usr, $pswd){
+        return $this->adapter->query("SELECT * FROM Tab_Usuarios WHERE (Usuario = '{$usr}' || Nombre = '{$usr}') && Password = '{$pswd}'; ", Adapter::QUERY_MODE_EXECUTE)->current();
+    }
+
     public function selectEmpresa($id)
     {
         
