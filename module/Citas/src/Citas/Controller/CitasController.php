@@ -27,7 +27,6 @@ class CitasController extends AbstractActionController
     
     public function indexAction()
     {
-
 		$this->dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter');
 		$dataUsuario = new Usuarios($this->dbAdapter);            
             //$postulaciones = $dataRelVaUser->getAll_User($identify['idTab_Usuario']); 
@@ -38,7 +37,6 @@ class CitasController extends AbstractActionController
         $this->layout()->sesion = $identify;
         $view = new ViewModel($index);
         return $view;
-        return new ViewModel();
     }
 
     public function loginAction(){
