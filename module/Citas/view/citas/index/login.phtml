@@ -1,1 +1,67 @@
-<h1>Casdfa va</h1>
+<div id="formulario">
+
+	<div id="pestanas">
+		<div id="pest1" class="pestanaOpt" onclick="pestanaOpt(this)"><h1 id="pest1">Registro</h1></div>
+		<div id="pest2" class="pestanaOpt activePestOpt" onclick="pestanaOpt(this)"><h1 id="pest2">Iniciar</h1></div>
+	</div>
+
+	<div id="contentPest1" class="pest1">
+		<div class="group-input">
+			<div class="group-indiv"><label>Nombre/Usuario</label></div>
+			<div class="group-indiv"><input id="usuario" type="text" name="resgistro"></div>
+		</div>
+		<div class="group-input">
+			<div class="group-indiv"><label>Contraseña</label></div>
+			<div class="group-indiv"><input id="pswd" type="text" name="resgistro"></div>
+		</div>
+		<div class="group-input">
+			<div class="group-indiv"><button id="inciar">Inciar</button></div>
+		</div>
+		<div class="nota">
+			<a href="">Olvide mi contraseña</a>
+		</div>
+	</div>
+
+	<div id="contentPest2" class="pest2 activePest">
+		<div class="group-input">
+			<div class="group-indiv"><label>Nombre</label></div>
+			<div class="group-indiv"><input type="text" name="resgistro"></div>
+		</div>
+		<div class="group-input">
+			<div class="group-indiv"><label>Contraseña</label></div>
+			<div class="group-indiv"><input type="text" name="resgistro"></div>
+		</div>
+		<div class="group-input">
+			<div class="group-indiv"><label>Confirmar contraseña</label></div>
+			<div class="group-indiv"><input type="text" name="resgistro"></div>
+		</div>
+		<div class="group-input">
+			<div class="group-indiv"><button id="registro">Registrarse</button></div>
+		</div>
+	</div>
+
+</div>
+
+<script type="text/javascript">
+	$("#inciar").on('click', function(event){
+		$.ajax({
+			method : 'POST',
+			url : 'verificar',
+			dataType : 'json',
+			'data': { 'user' : $("#usuario").val(), 'pass': $("#pswd").val() },
+			success: function(result){
+				console.log( result );
+
+				swal({
+					  title: result.message,
+					  type: result.status
+				});
+
+				if (result.status == "success") {
+					window.location.href = "/citas/pacientes";
+				}
+
+			}
+		});
+	});
+</script>

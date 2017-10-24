@@ -20,6 +20,8 @@ class IndexController extends AbstractActionController
     }
     public function loginAction()
     {
+    	
+        $this->layout('layout/layoutVacio');
         return new ViewModel();
     }
 }

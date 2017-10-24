@@ -23,7 +23,8 @@
             ->prependFile($this->basePath('js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
             ->prependFile($this->basePath('js/html5shiv.min.js'),   'text/javascript', array('conditional' => 'lt IE 9',))
         ; ?>
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.0/sweetalert2.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.0/sweetalert2.css" />
     </head>
     <body>
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -39,13 +40,16 @@
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="<?php echo $this->url('home') ?>"><?php echo $this->translate('Home') ?></a></li>
+                        <li class=""><a href="">Acerca</a></li>
+                        <li class=""><a href="">Servicios</a></li>
+                        <li class=""><a href="">Testimonios</a></li>
+                        <li class=""><a href="">Noticias</a></li>
+                        <li class=""><a href="">Contacto</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href='#'><span class='glyphicon glyphicon-user'></span> Sign Up</a></li>
                         <?php 
                             if (!isset($identify)) {
-                                echo "<li><a href='#'><span class='glyphicon glyphicon-user'></span> Sign Up</a></li>
-                                <li><a href='#'><span class='glyphicon glyphicon-log-in'></span> Login</a></li>";
+                                echo "<li><a id='entrar' href='#'><span class='glyphicon glyphicon-user'></span> Entrar/Registro</a></li>";
                             }
                             else {
                                 echo "<li><a href='#'><span class='glyphicon glyphicon-log-out'></span> Logout</a></li>";   
@@ -63,5 +67,6 @@
             </footer>
         </div> <!-- /container -->
         <?php echo $this->inlineScript() ?>
+
     </body>
 </html>

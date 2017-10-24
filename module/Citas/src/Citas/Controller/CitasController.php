@@ -35,6 +35,7 @@ class CitasController extends AbstractActionController
 		$index['usuario'] = $usuario;
 		// $this->layout()->sesion = $identify;
         $this->layout('layout/layout');
+        $this->layout()->sesion = $identify;
         $view = new ViewModel($index);
         return $view;
         return new ViewModel();
@@ -47,4 +48,175 @@ class CitasController extends AbstractActionController
 	public function citasAction(){
     	return new ViewModel();
     }
+
+    public function agendaAction(){
+        $identify = $this->auth->getStorage()->read();
+
+        if ($identify) {
+            // $view = new ViewModel(['Json' => json_encode($rest)]);
+            $view = new ViewModel();
+            $this->layout('layout/layoutCitas');
+            $this->layout()->sesion = $identify;
+            // $view->setTerminal(true);
+            return $view;
+        }   
+        return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/index/index');
+    }
+
+    public function editsitioAction(){
+        $identify = $this->auth->getStorage()->read();
+
+        if ($identify) {
+            // $view = new ViewModel(['Json' => json_encode($rest)]);
+            $view = new ViewModel();
+            $this->layout('layout/layoutCitas');
+            $this->layout()->sesion = $identify;
+            // $view->setTerminal(true);
+            return $view;
+        }   
+        return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/index/index');
+    }
+
+    public function historialAction(){
+        $identify = $this->auth->getStorage()->read();
+
+        if ($identify) {
+            // $view = new ViewModel(['Json' => json_encode($rest)]);
+            $view = new ViewModel();
+            $this->layout('layout/layoutCitas');
+            $this->layout()->sesion = $identify;
+            // $view->setTerminal(true);
+            return $view;
+        }   
+        return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/index/index');
+    }
+
+    public function notasAction(){
+        $identify = $this->auth->getStorage()->read();
+
+        if ($identify) {
+            // $view = new ViewModel(['Json' => json_encode($rest)]);
+            $view = new ViewModel();
+            $this->layout('layout/layoutCitas');
+            $this->layout()->sesion = $identify;
+            // $view->setTerminal(true);
+            return $view;
+        }   
+        return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/index/index');
+    }
+
+    public function pacientesAction(){
+        $identify = $this->auth->getStorage()->read();
+
+        if ($identify) {
+            // $view = new ViewModel(['Json' => json_encode($rest)]);
+            $view = new ViewModel();
+            $this->layout('layout/layoutCitas');
+            $this->layout()->sesion = $identify;
+            // $view->setTerminal(true);
+            return $view;
+        }   
+        return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/index/index');
+    }
+
+    public function pagosAction(){
+        $identify = $this->auth->getStorage()->read();
+
+        if ($identify) {
+            // $view = new ViewModel(['Json' => json_encode($rest)]);
+            $view = new ViewModel();
+            $this->layout('layout/layoutCitas');
+            $this->layout()->sesion = $identify;
+            // $view->setTerminal(true);
+            return $view;
+        }   
+        return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/index/index');
+    }
+
+    public function registrosAction(){
+        $identify = $this->auth->getStorage()->read();
+
+        if ($identify) {
+            // $view = new ViewModel(['Json' => json_encode($rest)]);
+            $view = new ViewModel();
+            $this->layout('layout/layoutCitas');
+            $this->layout()->sesion = $identify;
+            // $view->setTerminal(true);
+            return $view;
+        }   
+        return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/index/index');
+    }
+
+    public function usuariosAction(){
+        $identify = $this->auth->getStorage()->read();
+
+        if ($identify) {
+            // $view = new ViewModel(['Json' => json_encode($rest)]);
+            $view = new ViewModel();
+            $this->layout('layout/layoutCitas');
+            $this->layout()->sesion = $identify;
+            // $view->setTerminal(true);
+            return $view;
+        }   
+        return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/index/index');
+    }
+
+
+/*----------------------------------------------------------*
+*                       MODULO USUARIOS                     *
+*-----------------------------------------------------------*/
+    public function getsuariosAction(){
+        $identify = $this->auth->getStorage()->read();
+        if ($identify) {
+            $this->Adapter = $this->getServiceLocator()->get('Zend\Db\Adapter');
+            $DBUsuarios = new Usuarios($this->Adapter);
+            $usuario = $DBUsuarios->getAllUsuarios();
+
+            $view = new ViewModel(['Json' => json_encode(['data' => $usuario])]);
+            $view->setTemplate('citas/index/json');
+            $view->setTerminal(true);
+            return $view;
+        }
+        return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/index/index');
+    }
+
+
+    //CONTROLLER busqusuarios
+    public function busqusuariosAction(){
+        $identify = $this->auth->getStorage()->read();
+        if ($identify) {
+            $busqueda = $this->getRequest()->getPost('criterio');
+
+            $this->Adapter =$this->getServiceLocator()->get('Zend\Db\Adapter');
+            $DBUsuarios = new Usuarios($this->Adapter);
+            $usuarios = $DBUsuarios->getBsqlUsuarios($busqueda);
+
+            $view = new ViewModel(['Json' => json_encode(['data' => $usuarios])]);
+            $view->setTemplate('citas/index/json');
+            $view->setTerminal(true);
+            return $view;
+        }
+        return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/index/index');
+    }
+
+
+    // /CONTROLLER sugerirusuarios
+    public function sugerirusuariosAction(){
+        $identify = $this->auth->getStorage()->read();
+        if ($identify) {
+            $busqueda = $this->getRequest()->getPost('criterio');
+
+            $this->Adapter =$this->getServiceLocator()->get('Zend\Db\Adapter');
+            $DBUsuarios = new Usuarios($this->Adapter);
+            $usuarios = $DBUsuarios->getSugestUsuarios($busqueda);
+
+            $view = new ViewModel(['Json' => json_encode(['data' => $usuarios])]);
+            $view->setTemplate('citas/index/json');
+            $view->setTerminal(true);
+            return $view;
+        }
+        return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/index/index');
+    }    
+
+    
 }

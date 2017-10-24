@@ -25,32 +25,6 @@ class Usuarios extends TableGateway
         return $this->adapter->query("SELECT idTab_Usuario as idUsuario, Nombre as nombre, Usuario as user, idTipoUsuario as idTipoUsr FROM Tab_Usuarios WHERE (Usuario = '{$usr}' || Nombre = '{$usr}') && Password = '{$pswd}'; ", Adapter::QUERY_MODE_EXECUTE)->current();
     }
 
-    public function getAllUsuarios(){
-        $sqlUsuarios = "SELECT u.idTab_Usuario AS idUsuario, u.Nombre AS nombre, u.Usuario AS usuario, u.PASsword AS pswd, u.Apellidos AS apat, u.Telefono AS tel, u.Email AS mail, u.Direccion AS dir, tu.idTab_TipoUsuario AS idTipoUsuario, tu.Nombre AS tipoUsuario 
-            FROM tab_usuarios u 
-            JOIN tab_tipousuario tu on tu.idTab_TipoUsuario = u.idTab_Usuario; ";
-
-        return $this->adapter->query($sqlUsuarios, Adapter::QUERY_MODE_EXECUTE)->toArray();
-    }
-
-    public function getBsqlUsuarios($criterio){
-        $sqlUsuarios = "SELECT u.idTab_Usuario AS idUsuario, u.Nombre AS nombre, u.Usuario AS usuario, u.PASsword AS pswd, u.Apellidos AS apat, u.Telefono AS tel, u.Email AS mail, u.Direccion AS dir, tu.idTab_TipoUsuario AS idTipoUsuario, tu.Nombre AS tipoUsuario 
-            FROM tab_usuarios u 
-            JOIN tab_tipousuario tu on tu.idTab_TipoUsuario = u.idTab_Usuario
-            WHERE u.Nombre like '{$criterio}' || u.Usuario like '{$criterio}' || u.idTab_Usuario = '{$criterio}'; ";
-            
-        return $this->adapter->query($sqlUsuarios, Adapter::QUERY_MODE_EXECUTE)->toArray();
-    } 
-
-    public function getSugestUsuarios($criterio){
-        $criterio = trim($criterio);
-        $sqlUsuarios = "SELECT u.idTab_Usuario AS idUsuario, u.Nombre AS nombre, u.Usuario AS usuario, u.PASsword AS pswd, u.Apellidos AS apat, u.Telefono AS tel, u.Email AS mail, u.Direccion AS dir, tu.idTab_TipoUsuario AS idTipoUsuario, tu.Nombre AS tipoUsuario, Foto as imgUsr 
-            FROM tab_usuarios u 
-            JOIN tab_tipousuario tu on tu.idTab_TipoUsuario = u.idTab_Usuario
-            WHERE u.Nombre like '%{$criterio}%' || u.Usuario like '%{$criterio}%' || u.idTab_Usuario like '%{$criterio}%'; ";
-        return $this->adapter->query($sqlUsuarios, Adapter::QUERY_MODE_EXECUTE)->toArray();
-    } 
-
     public function selectEmpresa($id)
     {
         

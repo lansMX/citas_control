@@ -41,11 +41,16 @@
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="<?php echo $this->url('home') ?>"><?php echo $this->translate('Homie') ?></a></li>
+                        <li class="active"><a href="<?php echo $this->url('home') ?>">Acerca</a></li>
+                        <li class="active"><a href="<?php echo $this->url('home') ?>">Servicios</a></li>
+                        <li class="active"><a href="<?php echo $this->url('home') ?>">Testimonios<a></li>
+                        <li class="active"><a href="<?php echo $this->url('home') ?>">Noticias</a></li>
+                        <li class="active"><a href="<?php echo $this->url('home') ?>">Contato</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href='#'><span class='glyphicon glyphicon-user'></span> Sign Up</a></li>
                         <?php 
-                            if (!isset($identify)) {
+                            if (!isset($sesion)) {
                                 echo "<li><a href='#'><span class='glyphicon glyphicon-user'></span> Sign Up</a></li>
                                 <li><a href='#'><span class='glyphicon glyphicon-log-in'></span> Login</a></li>";
                             }
@@ -59,7 +64,7 @@
         </nav>
         <div class="container">
             <?php echo $this->content; ?>
-            <?php var_dump($identify); ?>
+            <?php var_dump($sesion); ?>
             <hr>
             <footer>
                 <p>&copy; 2005 - <?php echo date('Y') ?> by Zend Technologies Ltd. <?php echo $this->translate('All rights reserved.') ?></p>

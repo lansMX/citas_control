@@ -1,0 +1,360 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<!-- <script type="text/javascript" src="/js/js/modales.js" async></script> -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<!-- <script src="/js/js/dataTables.rowsGroup.js"></script>
+<script src="/js/jquery.number.js"></script> -->
+    <!-- Page content -->
+    <style type="text/css">
+    .inputBusqueda{
+        margin: 5%;
+        width: 60%;
+        display: inline-block;
+        box-shadow: 1px 3px 1px #e3e3e3;
+    }
+    .inputBusqueda:hover{
+        box-shadow: 1px 3px 1px #3e3e3e;
+    }    
+    .inputBusqueda > input{    
+        width: 96.4%;
+    }
+    .inputBusqueda > i {
+        background-color: rgba(84,99,120,0.8);
+        padding: .5% .6%;        
+        position: absolute;
+    }
+    .contentTable{
+        text-align: center;
+    }
+    .resultadosBusqueda{
+        width: 90%;
+        margin: 0 auto;
+    }
+    #lst-sugest{
+    	display: none;
+    }
+    li.sugest{
+    	background: #ccc;
+    	width: 100%;
+    }
+    li.sugest:hover, li.sugest:active{
+    	background: #ccccff;
+    }
+</style>
+
+    <h1>Pacientes</h1>
+    
+    <div class="buscador">
+        <div class="inputBusquedaGnrl">
+            <input id="sercherGnrl" type="button" name="sercherGnrl" value="Todos los usuarios" />
+        </div>
+        <div class="inputBusqueda sugest">            
+            <input id="sercher" type="text" name="sercher" placeholder="Busca por identificador, Usuario o Tipo de usuario" class="sercher sugest" />
+            <i id="sercher1" class="fa fa-search sugest" aria-hidden="true"></i>
+            <ul id="lst-sugest" class="sugest"></ul>
+        </div>
+    </div>
+    <div class="resultadosBusqueda">
+    	<table id="tblUser"></table>
+    	<table id="permisos"></table>
+    </div>
+    <input type="hidden" name="permisosUsr">
+
+
+<script type="text/javascript">
+    var permisosUsuario;
+    $("#sercher").on('keydown', function(event){
+        if (event.which == 13) {
+            busqueda($(this).val());
+        }
+        if ($("#sercher").val().length < 3) {
+        	sugerir($("#sercher").val());
+        }
+        else{
+        	$("#lst-sugest").css("display", "none");
+        }
+    });
+
+    $(window).on('mousemove', function(event){
+    	if(event.target.className.toString().includes("sugest") == false){
+        	$("#lst-sugest").css("display", "none");
+        }
+    });
+
+    $("#sercher1").on("click", function(event){
+        busqueda($(this).val());
+    });
+/*
+{"data":[{"idUsuario":"1","nombre":"Arturo Navarrete","usuario":"lans","pswd":"aserty","apat":"","tel":"","mail":"","dir":"","idTipoUsuario":"1","tipoUsuario":"Contacto"}]}
+*/
+    $("#sercherGnrl").on('click', function(event){
+    	if ($.fn.DataTable.isDataTable( '#tblUser' ) == true) {
+            restartDataTable($("#tblUser"));
+        }
+        $('#tblUser').DataTable({
+            "ajax": {
+                "type" : 'POST',
+                "url" : 'getsuarios',
+            },
+            "columns":
+            [
+                { 
+                    "title" : "Id",
+                    "className" : "contentTable",
+                    "data" : "idUsuario" 
+                },
+                { 
+                    "title" : "Nombre",
+                    "className" : "contentTable",
+                    "data" : "nombre"
+                },
+                { 
+                    "title" : "Telefono",
+                    "className" : "contentTable",
+                    "data" : "tel"
+                },
+                { 
+                    "title" : "Mail",
+                    "className" : "contentTable",
+                    "data" : "mail"
+                },
+                {
+                    "title" : "Tipo usuario",
+                    "className" : "contentTable",
+                    "data": "tipoUsuario"
+                },
+                {
+                    "title" : "Opción",
+                    "className" : "contentTable",
+                    "data": "idUsuario",
+                    "render": function ( data ) {
+                        return "<button onclick='permisosDataTable("+data+")'>Ver permisos</button>";
+                    }
+                }
+            ],
+        });
+    });
+
+    function permisosDataTable(usuario){
+        permisosUsr(usuario);
+        this.permisosDeUsurio = $("input[name='permisosUsr']").val();
+        dataTablePermiso(usuario);
+    }
+
+    function dataTablePermiso(usuario){
+        console.log("contenido de permisosDeUsurio");
+        console.log(this.permisosDeUsurio);
+        permisosUsuario = this.permisosDeUsurio;
+
+        console.log("contenido de permisos");
+        console.log(permisosUsuario);
+        if ($.fn.DataTable.isDataTable( '#tblUser' ) == true) {
+            restartDataTable($("#tblUser"));
+        }
+        $('#tblUser').DataTable({
+            "ajax": {
+                "type" : 'POST',
+                "url": '/desktop/todopermisos'
+            },
+            "columns":
+            [
+                { 
+                    "title" : "IdPermiso",
+                    "className" : "contentTable",
+                    "data" : "idOpcion"
+                },
+                { 
+                    "title" : "Permisos",
+                    "className" : "contentTable",
+                    "data" : "Nombre"                
+                },
+                { 
+                    "title" : "Activado",
+                    "className" : "contentTable",
+                    "targets": 0,
+                    "data": null,
+                    "render": function ( data ) {
+                        var contiene = indexOfValue(JSON.parse(permisosUsuario), data);
+                        if(contiene >= 0){
+                            var opcion = JSON.parse(permisosUsuario);
+                            if (opcion.data[contiene].Estatus == 1) {
+                                return "<span onclick='desactivar(this, "+usuario+")'>Si</span>";    
+                            }
+                            else{
+                                return "<span onclick='activar(this, "+usuario+")'>No</span>";
+                            }
+                            // return "<label class='switch'><input type='checkbox'><span class='slider round'></span></label>";
+                        }
+                        else{
+                            return "<span onclick='activar(this, "+usuario+")'>No</span>";
+                            // return "<label class='switch'><input type='checkbox'><span class='slider round'></span></label>";    
+                        }
+                        
+                    }
+                }
+            ],
+        });
+    }
+
+    function indexOfValue(ar, value){
+        var ind = -1;    
+        var array = ar.data;
+        console.log(array);
+        if(array.length > 0){
+            for (var i = 0; i < array.length; i++) {   
+                // console.log("compara : ");
+                // console.log(array[i]['idOpcion'] + " == " + value['idOpcion']);
+                if (array[i]['idOpcion'] == value['idOpcion']) {
+                    ind = i;
+                    break;
+                }
+            }
+        }
+
+        return ind;
+    }
+
+
+    function activar(ctrl, usr) {
+        var parent = $(ctrl).parent();
+
+        var permiso = $(parent).parent().find("td:nth-child(1)").text();
+
+        $(ctrl).remove();
+        $(parent).html('<span onclick="desactivar(this, ' + usr + ')">Si</span>');
+        editPermiso(usr, permiso, 1);
+    }
+
+    function desactivar(ctrl, usr) {
+        var parent = $(ctrl).parent();
+
+        var permiso = $(parent).parent().find("td:nth-child(1)").text();
+
+        $(ctrl).remove();
+        $(parent).html('<span onclick="activar(this, ' + usr + ')">No</span>');
+        editPermiso(usr, permiso, 0);
+    }
+
+    function editPermiso(idUsr, idOpt, status){
+        $.ajax({
+            method : 'POST',
+            url : 'editpermiso',
+            dataType : 'json',
+            data: { 'usr' : idUsr, 'opcion' : idOpt, 'status' : status },
+            success: function(result){
+                console.log(result);
+            }
+        });
+    }
+
+
+    function busqueda(criterio){
+        if ($.fn.DataTable.isDataTable( '#tblUser' ) == true) {
+            restartDataTable($("#tblUser"));
+        }
+        $('#tblUser').DataTable({
+            "ajax": {
+                "type" : 'POST',
+                "url": '/citas/busqusuarios',
+                "data": {
+                  'criterio' : criterio
+                }
+            },
+            "columns":
+            [
+                { 
+                    "title" : "Id",
+                    "className" : "contentTable",
+                    "data" : "idUsuario" 
+                },
+                { 
+                    "title" : "Nombre",
+                    "className" : "contentTable",
+                    "data" : "nombre"
+                },
+                { 
+                    "title" : "Telefono",
+                    "className" : "contentTable",
+                    "data" : "tel"
+                },
+                { 
+                    "title" : "Mail",
+                    "className" : "contentTable",
+                    "data" : "mail"
+                },
+                {
+                    "title" : "Tipo usuario",
+                    "className" : "contentTable",
+                    "data": "tipoUsuario"
+                },
+                {
+                    "title" : "Opciones",
+                    "className" : "contentTable",
+                    "data": "idUsuario",
+                    "render": function ( data ) {
+                        return "<button onclick='permisosDataTable("+data+")'>Ver permisos</button>";
+                    }
+                }
+            ],
+        });
+    }
+
+
+    function sugerir(criterio){
+    	$.ajax({
+    		method : 'POST',
+    		url : '/citas/sugerirusuarios',
+    		dataType : 'json',
+    		'data': { 'criterio' : criterio },
+    		success: function(result){
+    			console.log(result);
+    			if (result.data != undefined) {
+	    			$("#lst-sugest").empty();
+	    			$("#lst-sugest").css("display", "block");
+	    			var list = "";
+	    			$.each(result.data, function(i, v){
+	    				list += "<li onclick='busqueda("+v.idUsuario+")' class='sugest' style='cursor:pointer;'><img src='"+v.imgUsr+"' class='sugest' style='width:50px;height:50px;vertical-align:-70%;'>&nbsp"+v.usuario+" - "+v.nombre+"</li>";
+	    			});
+	    			$("#lst-sugest").append(list);
+    			}
+    		}
+    	});
+    }
+    
+    var permisosDeUsurio;
+    function permisosUsr(usuario){
+        var permisos;
+        $.ajax({
+            method : 'POST',
+            url : '/desktop/permisos',
+            dataType : 'json',
+            data: { 'idUsuario' : usuario },
+            success: function(result){
+                // console.log(result);
+                permisos = JSON.stringify(result);
+                permisosUsuario = permisos;
+                // console.log("permisosUsr ajax");
+                // console.log(permisos.data);
+                // this.permisosDeUsurio = result.data;
+                $("input[name='permisosUsr']").val(result.data);
+                // console.log("agregar val " + result.data);
+                // console.log($("input[name='permisosUsr']").val());
+            }
+        });
+        // console.log("permisosUsr fuera ajax");
+        // console.log($("input[name='permisosUsr']").val());
+        return permisos;        
+    }
+
+    function restartDataTable(table){
+        table.dataTable().fnDestroy();
+        table.empty();
+    }
+
+
+
+	$(".vertical-menu > a.menuOpt.active").removeClass('active');
+    $(".vertical-menu").find("a#pacientes").addClass('active');
+</script>

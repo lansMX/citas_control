@@ -1,0 +1,44 @@
+<style type="text/css">
+	#divBuscador{
+		display: inline-block;
+	}
+	.bsq{
+
+	}
+	.spn-detail{
+		background: gray;
+		height: 3%;
+	    width: 2%;
+	    position: absolute;
+	    float: left;
+	    text-align: center;
+	    vertical-align: text-top;
+	    
+	}
+	#divb{
+		width: 100%;
+	}
+</style>
+<div id="usuarios">
+    <!-- Page content -->
+    <h1>Usuarios</h1>
+
+    <div id="divBtn">
+    	<input id="todoUsr" type="button" name="todoUsr" class="btn btn-pre" value='Todos los Usuarios'>
+    </div>
+    <div id="divBuscador">
+    	<input id="buscador" type="text" name="buscador" class="txt txt-val bsq" />
+    	<span class="spn-detail"><i class="fa fa-search fa-3 bsq" aria-hidden="true"></i></span>
+    </div>
+
+    <div id="contenido">
+    	<table id="tblUsuarios"></table>
+    </div>
+
+</div>
+<script type="text/javascript">
+	$(".vertical-menu > a.menuOpt.active").removeClass('active');
+    $(".vertical-menu").find("a#usuarios").addClass('active');
+
+
+</script>

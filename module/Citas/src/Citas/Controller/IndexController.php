@@ -57,14 +57,17 @@ class IndexController extends AbstractActionController
 
         if ($RsUsuario) {
             $ArrayUsuario = [                                     
-                'Id'      => $RsUsuario['idTab_Usuario'], 
-                'Usuario'    => $RsUsuario['Usuario'], 
-                'NombreUsuario' => $RsUsuario['Nombre']
+                'claveUsuario'      => $RsUsuario['idUsuario'], 
+                'usuario'    => $RsUsuario['user'], 
+                'nombreUsuario' => $RsUsuario['nombre'],
+                'claveTipoUsuario' => $RsUsuario['idTipoUsr']
             ];
             $identify = $this->auth->getStorage()->write($ArrayUsuario);
+            $this->layout()->sesion = $identify;
+            // $rest = [ 'status' => 'success', 'message' => 'Inicio de sesión correcto' ];
             $rest = [ 'status' => 'success', 'message' => 'Inicio de sesión correcto' ];
         } else {
-            $rest = [ 'status' => 'error', 'message' => 'Credenciales incorrectas' . $RsUsuario ];
+            $rest = [ 'status' => 'error', 'message' => 'Credenciales incorrectas' ];
         }
 
         $view = new ViewModel(['Json' => json_encode($rest)]);
@@ -85,7 +88,7 @@ class IndexController extends AbstractActionController
         if ($identify) {
             $this->auth->getStorage()->clear();    
         }   
-        return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/');
+        return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/index/index');
     }
 
 
