@@ -13,11 +13,12 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Authentication\AuthenticationService;
 use Citas\Model\Psicologa\Usuarios;
+use Citas\Model\Psicologa\Historial;
 
 class CitasController extends AbstractActionController
 {
 	
-	public $dbAdapter;// base de datos
+	public $Adapter;// base de datos
     private $auth;//autenticacion Sesion
 
     public function __construct() {
@@ -27,12 +28,17 @@ class CitasController extends AbstractActionController
     
     public function indexAction()
     {
-		$this->dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter');
-		$dataUsuario = new Usuarios($this->dbAdapter);            
-            //$postulaciones = $dataRelVaUser->getAll_User($identify['idTab_Usuario']); 
+        $identify = $this->auth->getStorage()->read();
+
+		$this->Adapter = $this->getServiceLocator()->get('Zend\Db\Adapter');
+		$dataUsuario = new Usuarios($this->Adapter);
         $usuario = $dataUsuario->fetchAll();
-		$index['usuario'] = $usuario;
-		// $this->layout()->sesion = $identify;
+
+        $index['usuario'] = $usuario;
+        
+        $action = $this->getRequest()->getServer()->get('REQUEST_URI');
+        $this->addHistorial($action, "", "citas>index Vista");
+
         $this->layout('layout/layout');
         $this->layout()->sesion = $identify;
         $view = new ViewModel($index);
@@ -51,11 +57,13 @@ class CitasController extends AbstractActionController
         $identify = $this->auth->getStorage()->read();
 
         if ($identify) {
-            // $view = new ViewModel(['Json' => json_encode($rest)]);
+
+            // $action = $this->getRequest()->getServer()->get('REQUEST_URI');
+            // $this->addHistorial($action, "", "citas>agenda Vista");
+
             $view = new ViewModel();
             $this->layout('layout/layoutCitas');
             $this->layout()->sesion = $identify;
-            // $view->setTerminal(true);
             return $view;
         }   
         return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/index/index');
@@ -159,7 +167,41 @@ class CitasController extends AbstractActionController
         return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/index/index');
     }
 
+/*----------------------------------------------------------*
+*                      MODULO PACIENTES                     *
+*-----------------------------------------------------------*/
+    //CONTROLLER getpacientes
+    public function getpacientesAction(){
+        $identify = $this->auth->getStorage()->read();
+        if ($identify) {
+            $this->Adapter = $this->getServiceLocator()->get('Zend\Db\Adapter');
+            $DBUsuarios = new Usuarios($this->Adapter);
+            $usuario = $DBUsuarios->getAllPacientes();
 
+            $view = new ViewModel( ['Json' => json_encode(['data' => $usuario])] );
+            $view->setTemplate('citas/index/json');
+            $view->setTerminal(true);
+            return $view;
+        }
+        return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/');
+    }
+
+    public function sugerirpacientesAction(){
+        $identify = $this->auth->getStorage()->read();
+        if ($identify) {
+            $busqueda = $this->getRequest()->getPost('criterio');
+
+            $this->Adapter = $this->getServiceLocator()->get('Zend\Db\Adapter');
+            $DBUsuarios = new Usuarios($this->Adapter);
+            $usuario = $DBUsuarios->getSugestPacientes($busqueda);
+
+            $view = new ViewModel( ['Json' => json_encode(['data' => $usuario])] );
+            $view->setTemplate('citas/index/json');
+            $view->setTerminal(true);
+            return $view;
+        }
+        return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/');
+    }
 /*----------------------------------------------------------*
 *                       MODULO USUARIOS                     *
 *-----------------------------------------------------------*/
@@ -216,5 +258,74 @@ class CitasController extends AbstractActionController
         return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/index/index');
     }    
 
-    
+/*----------------------------------------------------------*
+*                        MODULO AGENDA                      *
+*-----------------------------------------------------------*/
+  
+
+/*----------------------------------------------------------*
+*                      MODULO HISTORIAL                     *
+*-----------------------------------------------------------*/
+    public function addHistorial($seccion, $accion, $desc){
+        $identify = $this->auth->getStorage()->read();
+        if ($identify) {
+            $servParam = $this->getRequest()->getServer();
+            $remoteAddr = $servParam->get('REMOTE_ADDR');
+            $remoteDisp = $servParam->get('HTTP_USER_AGENT');
+
+            $this->Adapter = $this->getServiceLocator()->get('Zend/Db/Adapter');
+
+            $DBHistorial = new Historial($this->Adapter);
+
+            $arrayHistorial = array(
+                'idUsuario' => $identify['claveUsuario'],
+                'Seccion' => $seccion,
+                'Accion' => $accion,
+                'Description' => $desc,
+                'Ip' => $remoteAddr,
+                'Dispositivo' => $remoteDisp
+            );
+
+            $historial = $DBHistorial->addHistorial($arrayHistorial);
+            return $historial;
+        }
+        return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/');
+    }
+
+    public function gethistorialAction(){
+        $identify = $this->auth->getStorage()->read();
+        if ($identify) {
+            $this->Adapter = $this->getServiceLocator()->get('Zend/Db/Adapter');
+
+            $DBHistorial = new Historial($this->Adapter);
+            $historial = $DBHistorial->getHistorial();
+
+            $view = new ViewModel(['Json' => json_encode(['data' => $historial])]);
+            $view->setTemplate('citas/index/json');
+            $view->setTerminal(true);
+            return $view;
+        }
+        return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/');
+    }
+
+  
+/*----------------------------------------------------------*
+*                      MODULO USUARIOS                      *
+*-----------------------------------------------------------*/
+    //CONTROLLER usuarios
+    public function usuariosdosAction(){
+        $identify = $this->auth->getStorage()->read();
+        if ($identify) {
+            $this->Adapter = $this->getServiceLocator()->get('Zend/Db/Adapter');
+
+            $DBHistorial = new Historial($this->Adapter);
+            $historial = $DBHistorial->getHistorial();
+
+            $view = new ViewModel(['Json' => json_encode(['data' => $historial])]);
+            $view->setTemplate('citas/index/json');
+            $view->setTerminal(true);
+            return $view;
+        }
+        return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/');
+    }
 }

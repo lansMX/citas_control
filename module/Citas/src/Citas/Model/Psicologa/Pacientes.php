@@ -1,3 +1,4 @@
+
 <?php
 
 namespace Citas\Model\Psicologa;
@@ -6,10 +7,8 @@ use Zend\Db\Adapter\Adapter;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
 
-class Usuarios extends TableGateway
+class Pacientes extends TableGateway
 {
-    
-    
     public function __construct(Adapter $adapter = null, $databaseSchema = null, ResultSet $selectResultPrototype = null)
     {
         return parent::__construct('Tab_Usuarios', $adapter, $databaseSchema, $selectResultPrototype);

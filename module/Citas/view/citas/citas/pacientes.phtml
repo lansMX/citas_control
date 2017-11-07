@@ -96,7 +96,7 @@
         $('#tblUser').DataTable({
             "ajax": {
                 "type" : 'POST',
-                "url" : 'getsuarios',
+                "url" : ' getpacientes',
             },
             "columns":
             [
@@ -305,7 +305,7 @@
     function sugerir(criterio){
     	$.ajax({
     		method : 'POST',
-    		url : '/citas/sugerirusuarios',
+    		url : '/citas/sugerirpacientes',
     		dataType : 'json',
     		'data': { 'criterio' : criterio },
     		success: function(result){

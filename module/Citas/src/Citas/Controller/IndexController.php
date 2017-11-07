@@ -33,7 +33,7 @@ class IndexController extends AbstractActionController
   //       $usuario = $dataUsuario->fetchAll();
 		// $index['usuario'] = $usuario;
         
-  //       $this->layout()->sesion = $identify;
+        // $this->layout()->sesion = $identify;
         $view = new ViewModel();
         $this->layout('layout/layout');        
         return $view;
@@ -91,5 +91,7 @@ class IndexController extends AbstractActionController
         return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/index/index');
     }
 
+
+    
 
 }

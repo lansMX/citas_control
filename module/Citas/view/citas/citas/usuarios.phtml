@@ -1,3 +1,170 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<!-- <script type="text/javascript" src="/js/js/modales.js" async></script> -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+
+<script src="/js/jquery.number.js"></script>
+<style type="text/css">
+    body{
+        /*font-size: 1em !important;*/
+    }
+        main {  min-width: 320px;  max-width: 100%;  /*padding: 10px;*/  margin: 0 auto;  background: #fff;  }
+      section {display: none;padding: 20px 0 0;border-top: 1px solid #ddd }
+      input[name="tabs"] {display: none;}
+      label.tab {display: inline-block;margin: 0 0 -1px;padding: 15px 25px;font-weight: 600;text-align: center;color: #bbb;border: 1px solid transparent;}
+    /*
+      label:before {font-family: fontawesome;font-weight: normal;margin-right: 10px;}
+      label[for*='1']:before { content: '\f0b1'; }
+      label[for*='2']:before { content: '\f0c0'; }
+      label[for*='3']:before { content: '\f1ab'; }
+      label[for*='4']:before { content: '\f19c'; }*/
+
+  label.tab:hover {
+    color: #888;
+    cursor: pointer;
+  }
+  input:checked + label {color: #555;border: 1px solid #ddd;border-top: 2px solid #cf7131;border-bottom: 1px solid #fff;}
+
+  #tab1Complejos:checked ~ #content1,
+  #tab3Pisos:checked ~ #content1,
+  #tab4Locales:checked ~ #content1 {
+    display: block;
+  }
+
+  @media screen and (max-width: 650px) {
+    label {
+      font-size: 0;
+    }
+    label:before {
+      margin: 0;
+      font-size: 18px;
+    }
+  }
+
+  @media screen and (max-width: 400px) {
+    label {
+      padding: 15px;
+    }
+  }
+</style>
+<style type="text/css">
+    .inputBusqueda{
+        margin: 5%;
+        width: 60%;
+        display: inline-block;
+        box-shadow: 1px 3px 1px #e3e3e3;
+    }
+    .inputBusqueda:hover{
+        box-shadow: 1px 3px 1px #3e3e3e;
+    }    
+    .inputBusqueda > input{    
+        width: 95.8%;
+    }
+    .inputBusqueda > i {
+        background-color: rgba(84,99,120,0.8);
+        padding: .5% .6%;        
+        position: absolute;
+    }
+    .contentTable{
+        text-align: center;
+    }
+    .resultadosBusqueda{
+        width: 93%;
+        margin: 0 auto;
+        overflow-y: hidden;
+        overflow-x: auto;
+    }
+    #listaSug{
+        display: none;
+        /*list-style-type: decimal-leading-zero;*/
+        list-style-type: none;
+    }
+    .sugBsq{
+        width: 10%;
+        height: 10%;
+        vertical-align: -50%;
+    }
+    li.elem:hover{
+        background: rgba(118, 130, 147, 0.1);
+    }
+    thead, tbody{
+        font-size: 14px;
+    }
+    i{
+        cursor: pointer;
+    }
+    .selected{
+        background: #00e3e3;
+    }
+    #conedidoTabs{
+        height: 250px;
+        max-height: 500px;
+    }
+    #contenidoTabs > .groupDetails{
+        display: inline-block;
+        width: 50%;
+    }
+    .groupDetails{
+        float: left;
+    
+    }
+    label.groupFormDetails{
+        margin: 5px;
+        font-style: normal;
+        font-weight: 800 !important;
+    }
+    .groupDetails > input, 
+    .groupDetails > select{
+        width: 80%;
+        margin: 2px auto 10px;
+    }
+    .dispDefault{
+        width: 80%;
+        cursor: pointer;
+        font-style: oblique;
+        font-weight: lighter;
+        font-size: small;
+        padding: 2%;
+    }
+    .dispDefault:hover{
+        background: #888;
+    }
+    .edicionInput{
+        width: 80%;
+        display: none;
+    }
+    .edit-abled{
+        display: block;
+        font-style: normal;
+        font-size: small;
+        /*font-family: sans-serif;*/
+        display: flex;
+        position: absolute;
+        margin: -2% 28%;
+    }
+    .edit-abled:hover{
+        text-decoration: underline;
+        display: flex;
+    }
+    .edit-disabled{
+        display: none;
+    }
+    button.swal-button.swal-button--cancel{
+        color: #fff !important;
+        background-color: #ec2222 !important;
+    }
+    button.swal-button.swal-button--catch{
+        color: #fff !important;
+        background: #0f730f !important;
+    }
+</style>
+
 <style type="text/css">
 	#divBuscador{
 		display: inline-block;
@@ -13,32 +180,1123 @@
 	    float: left;
 	    text-align: center;
 	    vertical-align: text-top;
-	    
 	}
 	#divb{
 		width: 100%;
 	}
+	.active-row{
+		background: #b2f1f1 !important;
+	}
+	/*body {font-family: "Lato", sans-serif;}*/
+
+/* Style the tab */
+div.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+div.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+div.tab button:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+div.tab button.active {
+    background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+}
+
+/* Style the close button */
+.topright {
+    float: right;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.topright:hover {color: red;}
+
+.inputBusqueda{
+        margin: 5%;
+        width: 60%;
+        display: inline-block;
+        box-shadow: 1px 3px 1px #e3e3e3;
+    }
+    .inputBusqueda:hover{
+        box-shadow: 1px 3px 1px #3e3e3e;
+    }    
+    .inputBusqueda > input{    
+        width: 96.4%;
+    }
+    .inputBusqueda > i {
+        background-color: rgba(84,99,120,0.8);
+        padding: .5% .6%;        
+        position: absolute;
+    }
+    .contentTable{
+        text-align: center;
+    }
+    .resultadosBusqueda{
+        width: 90%;
+        margin: 0 auto;
+    }
+    #lst-sugest{
+    	display: none;
+    }
+    li.sugest{
+    	background: #ccc;
+    	width: 100%;
+    }
+    li.sugest:hover, li.sugest:active{
+    	background: #ccccff;
+    }
 </style>
-<div id="usuarios">
-    <!-- Page content -->
+<!-- 
+ <h1>Pacientes</h1>
+    
+    <div class="buscador">
+        <div class="inputBusquedaGnrl">
+            <input id="sercherGnrl" type="button" name="sercherGnrl" value="Todos los usuarios" />
+        </div>
+        <div class="inputBusqueda sugest">            
+            <input id="sercher" type="text" name="sercher" placeholder="Busca por identificador, Usuario o Tipo de usuario" class="sercher sugest" />
+            <i id="sercher1" class="fa fa-search sugest" aria-hidden="true"></i>
+            <ul id="lst-sugest" class="sugest"></ul>
+        </div>
+    </div>
+    <div class="resultadosBusqueda">
+    	<table id="tblUser"></table>
+    	<table id="permisos"></table>
+    </div>
+    <input type="hidden" name="permisosUsr"> -->
+
+    <div>
     <h1>Usuarios</h1>
+    
+    <div class="buscador elem">
+        <div class="inputBusquedaGnrl">
+            <input id="sercherGnrl" type="button" name="sercherGnrl" value="Todos los usuarios" onclick="busqueda('all')" />
+        </div>
+        <div class="inputBusqueda elem">            
+            <input id="sercher" type="text" name="sercher" placeholder="Busca por identificador, Usuario o Tipo de usuario" class="sercher elem" />
+            <i id="sercher1" class="fa fa-search elem" aria-hidden="true"></i>
+            <ul id='listaSug' class="elem"></ul>
+        </div>
+        <div class="resultadosBusqueda">
+            <table id="myTable"></table>
+            <table id="permisos"></table>
+        </div>
+        <div id="detalles" style="display: none;">
+            <div>
+              <main>
+                <input id="tab4Locales" type="radio" name="tabs" value="Cat_Universidades" checked>
+                <label for="tab4Locales" class="tab"><i class="fa fa-cube" aria-hiden="true"></i>Información</label>
 
-    <div id="divBtn">
-    	<input id="todoUsr" type="button" name="todoUsr" class="btn btn-pre" value='Todos los Usuarios'>
-    </div>
-    <div id="divBuscador">
-    	<input id="buscador" type="text" name="buscador" class="txt txt-val bsq" />
-    	<span class="spn-detail"><i class="fa fa-search fa-3 bsq" aria-hidden="true"></i></span>
+                <input id="tab1Complejos" type="radio" name="tabs" value="Cat_AreaTrabajo">
+                <label for="tab1Complejos" class="tab"><i class="fa fa-building" aria-hiden="true"></i>Historial</label>
+
+                <input id="tab3Pisos" type="radio" name="tabs" value="Cat_Idiomas">
+                <label for="tab3Pisos" class="tab"><i class="fa fa-codepen" aria-hiden="true"></i>Permisos</label>
+              </main>
+            </div>
+            <hr>
+            <div id="contenidoTabs">
+                
+            </div>
+        </div>
     </div>
 
-    <div id="contenido">
-    	<table id="tblUsuarios"></table>
-    </div>
+    <input type="hidden" name="permisosUsr">
 
 </div>
+
+<!-- 
+<div class="tab">
+  <button class="tablinks" onclick="openCity(event, 'Informacion')" id="defaultOpen">Información</button>
+  <button class="tablinks" onclick="openCity(event, 'Historial')">Historial</button>
+  <button class="tablinks" onclick="openCity(event, 'Permisos')">Permisos</button>
+</div>
+
+<div id="Informacion" class="tabcontent">
+  <span onclick="this.parentElement.style.display='none'" class="topright">x</span>
+  <h3>Información</h3>
+  <p>Información is the capital city of England.</p>
+</div>
+
+<div id="Historial" class="tabcontent">
+  <span onclick="this.parentElement.style.display='none'" class="topright">x</span>
+  <h3>Historial</h3>Historial
+  <p>Historial is the capital of France.</p> 
+</div>
+
+<div id="Permisos" class="tabcontent">
+  <span onclick="this.parentElement.style.display='none'" class="topright">x</span>
+  <h3>Permisos</h3>
+  <p>Permisos is the capital of Japan.</p>
+</div> -->
+
+<script>
+/*function openCity(evt, cityName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(cityName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();*/
+</script>
+
+
 <script type="text/javascript">
+	//     var permisosUsuario;
+	//     $("#sercher").on('keydown', function(event){
+	//         if (event.which == 13) {
+	//             busqueda($(this).val());
+	//         }
+	//         if ($("#sercher").val().length < 3) {
+	//         	sugerir($("#sercher").val());
+	//         }
+	//         else{
+	//         	$("#lst-sugest").css("display", "none");
+	//         }
+	//     });
+
+	//     $(window).on('mousemove', function(event){
+	//     	if(event.target.className.toString().includes("sugest") == false){
+	//         	$("#lst-sugest").css("display", "none");
+	//         }
+	//     });
+
+	//     $("#sercher1").on("click", function(event){
+	//         busqueda($(this).val());
+	//     });
+	// /*
+	// {"data":[{"idUsuario":"1","nombre":"Arturo Navarrete","usuario":"lans","pswd":"aserty","apat":"","tel":"","mail":"","dir":"","idTipoUsuario":"1","tipoUsuario":"Contacto"}]}
+	// */
+	//     $("#sercherGnrl").on('click', function(event){
+	//     	if ($.fn.DataTable.isDataTable( '#tblUser' ) == true) {
+	//             restartDataTable($("#tblUser"));
+	//         }
+	//         $('#tblUser').DataTable({
+	//             "ajax": {
+	//                 "type" : 'POST',
+	//                 "url" : 'getsuarios',
+	//             },
+	//             "columns":
+	//             [
+	//                 { 
+	//                     "title" : "Id",
+	//                     "className" : "contentTable",
+	//                     "data" : "idUsuario" 
+	//                 },
+	//                 { 
+	//                     "title" : "Nombre",
+	//                     "className" : "contentTable",
+	//                     "data" : "nombre"
+	//                 },
+	//                 { 
+	//                     "title" : "Telefono",
+	//                     "className" : "contentTable",
+	//                     "data" : "tel"
+	//                 },
+	//                 { 
+	//                     "title" : "Mail",
+	//                     "className" : "contentTable",
+	//                     "data" : "mail"
+	//                 },
+	//                 {
+	//                     "title" : "Tipo usuario",
+	//                     "className" : "contentTable",
+	//                     "data": "tipoUsuario"
+	//                 },
+	//                 {
+	//                     "title" : "Opción",
+	//                     "className" : "contentTable",
+	//                     "data": "idUsuario",
+	//                     "render": function ( data ) {
+	//                         return "<button onclick='permisosDataTable("+data+")'>Ver permisos</button>";
+	//                     }
+	//                 }
+	//             ],
+	//         });
+	//     });
+
+	//     function permisosDataTable(usuario){
+	//         permisosUsr(usuario);
+	//         this.permisosDeUsurio = $("input[name='permisosUsr']").val();
+	//         dataTablePermiso(usuario);
+	//     }
+
+	//     function dataTablePermiso(usuario){
+	//         console.log("contenido de permisosDeUsurio");
+	//         console.log(this.permisosDeUsurio);
+	//         permisosUsuario = this.permisosDeUsurio;
+
+	//         console.log("contenido de permisos");
+	//         console.log(permisosUsuario);
+	//         if ($.fn.DataTable.isDataTable( '#tblUser' ) == true) {
+	//             restartDataTable($("#tblUser"));
+	//         }
+	//         $('#tblUser').DataTable({
+	//             "ajax": {
+	//                 "type" : 'POST',
+	//                 "url": '/desktop/todopermisos'
+	//             },
+	//             "columns":
+	//             [
+	//                 { 
+	//                     "title" : "IdPermiso",
+	//                     "className" : "contentTable",
+	//                     "data" : "idOpcion"
+	//                 },
+	//                 { 
+	//                     "title" : "Permisos",
+	//                     "className" : "contentTable",
+	//                     "data" : "Nombre"                
+	//                 },
+	//                 { 
+	//                     "title" : "Activado",
+	//                     "className" : "contentTable",
+	//                     "targets": 0,
+	//                     "data": null,
+	//                     "render": function ( data ) {
+	//                         var contiene = indexOfValue(JSON.parse(permisosUsuario), data);
+	//                         if(contiene >= 0){
+	//                             var opcion = JSON.parse(permisosUsuario);
+	//                             if (opcion.data[contiene].Estatus == 1) {
+	//                                 return "<span onclick='desactivar(this, "+usuario+")'>Si</span>";    
+	//                             }
+	//                             else{
+	//                                 return "<span onclick='activar(this, "+usuario+")'>No</span>";
+	//                             }
+	//                             // return "<label class='switch'><input type='checkbox'><span class='slider round'></span></label>";
+	//                         }
+	//                         else{
+	//                             return "<span onclick='activar(this, "+usuario+")'>No</span>";
+	//                             // return "<label class='switch'><input type='checkbox'><span class='slider round'></span></label>";    
+	//                         }
+	                        
+	//                     }
+	//                 }
+	//             ],
+	//         });
+	//     }
+
+	//     function indexOfValue(ar, value){
+	//         var ind = -1;    
+	//         var array = ar.data;
+	//         console.log(array);
+	//         if(array.length > 0){
+	//             for (var i = 0; i < array.length; i++) {   
+	//                 // console.log("compara : ");
+	//                 // console.log(array[i]['idOpcion'] + " == " + value['idOpcion']);
+	//                 if (array[i]['idOpcion'] == value['idOpcion']) {
+	//                     ind = i;
+	//                     break;
+	//                 }
+	//             }
+	//         }
+
+	//         return ind;
+	//     }
+
+
+	//     function activar(ctrl, usr) {
+	//         var parent = $(ctrl).parent();
+
+	//         var permiso = $(parent).parent().find("td:nth-child(1)").text();
+
+	//         $(ctrl).remove();
+	//         $(parent).html('<span onclick="desactivar(this, ' + usr + ')">Si</span>');
+	//         editPermiso(usr, permiso, 1);
+	//     }
+
+	//     function desactivar(ctrl, usr) {
+	//         var parent = $(ctrl).parent();
+
+	//         var permiso = $(parent).parent().find("td:nth-child(1)").text();
+
+	//         $(ctrl).remove();
+	//         $(parent).html('<span onclick="activar(this, ' + usr + ')">No</span>');
+	//         editPermiso(usr, permiso, 0);
+	//     }
+
+	//     function editPermiso(idUsr, idOpt, status){
+	//         $.ajax({
+	//             method : 'POST',
+	//             url : 'editpermiso',
+	//             dataType : 'json',
+	//             data: { 'usr' : idUsr, 'opcion' : idOpt, 'status' : status },
+	//             success: function(result){
+	//                 console.log(result);
+	//             }
+	//         });
+	//     }
+
+
+	//     function busqueda(criterio){
+	//         if ($.fn.DataTable.isDataTable( '#tblUser' ) == true) {
+	//             restartDataTable($("#tblUser"));
+	//         }
+	//         $('#tblUser').DataTable({
+	//             "ajax": {
+	//                 "type" : 'POST',
+	//                 "url": '/citas/busqusuarios',
+	//                 "data": {
+	//                   'criterio' : criterio
+	//                 }
+	//             },
+	//             "columns":
+	//             [
+	//                 { 
+	//                     "title" : "Id",
+	//                     "className" : "contentTable",
+	//                     "data" : "idUsuario" 
+	//                 },
+	//                 { 
+	//                     "title" : "Nombre",
+	//                     "className" : "contentTable",
+	//                     "data" : "nombre"
+	//                 },
+	//                 { 
+	//                     "title" : "Telefono",
+	//                     "className" : "contentTable",
+	//                     "data" : "tel"
+	//                 },
+	//                 { 
+	//                     "title" : "Mail",
+	//                     "className" : "contentTable",
+	//                     "data" : "mail"
+	//                 },
+	//                 {
+	//                     "title" : "Tipo usuario",
+	//                     "className" : "contentTable",
+	//                     "data": "tipoUsuario"
+	//                 },
+	//                 {
+	//                     "title" : "Opciones",
+	//                     "className" : "contentTable",
+	//                     "data": "idUsuario",
+	//                     "render": function ( data ) {
+	//                         return "<button onclick='permisosDataTable("+data+")'>Ver permisos</button>";
+	//                     }
+	//                 }
+	//             ],
+	//         });
+	//     }
+
+
+	//     function sugerir(criterio){
+	//     	$.ajax({
+	//     		method : 'POST',
+	//     		url : '/citas/sugerirpacientes',
+	//     		dataType : 'json',
+	//     		'data': { 'criterio' : criterio },
+	//     		success: function(result){
+	//     			console.log(result);
+	//     			if (result.data != undefined) {
+	// 	    			$("#lst-sugest").empty();
+	// 	    			$("#lst-sugest").css("display", "block");
+	// 	    			var list = "";
+	// 	    			$.each(result.data, function(i, v){
+	// 	    				list += "<li onclick='busqueda("+v.idUsuario+")' class='sugest' style='cursor:pointer;'><img src='"+v.imgUsr+"' class='sugest' style='width:50px;height:50px;vertical-align:-70%;'>&nbsp"+v.usuario+" - "+v.nombre+"</li>";
+	// 	    			});
+	// 	    			$("#lst-sugest").append(list);
+	//     			}
+	//     		}
+	//     	});
+	//     }
+	    
+	//     var permisosDeUsurio;
+	//     function permisosUsr(usuario){
+	//         var permisos;
+	//         $.ajax({
+	//             method : 'POST',
+	//             url : '/desktop/permisos',
+	//             dataType : 'json',
+	//             data: { 'idUsuario' : usuario },
+	//             success: function(result){
+	//                 // console.log(result);
+	//                 permisos = JSON.stringify(result);
+	//                 permisosUsuario = permisos;
+	//                 // console.log("permisosUsr ajax");
+	//                 // console.log(permisos.data);
+	//                 // this.permisosDeUsurio = result.data;
+	//                 $("input[name='permisosUsr']").val(result.data);
+	//                 // console.log("agregar val " + result.data);
+	//                 // console.log($("input[name='permisosUsr']").val());
+	//             }
+	//         });
+	//         // console.log("permisosUsr fuera ajax");
+	//         // console.log($("input[name='permisosUsr']").val());
+	//         return permisos;        
+	//     }
+
+	//     function restartDataTable(table){
+	//         table.dataTable().fnDestroy();
+	//         table.empty();
+	//     }
+
+	//     $(".contentTable").on('click', function(){
+	//     	$(".contentTable").parent().parent().children().removeClass("active-row");
+	//     	$(this).addClass("active-row");
+	//     });
+
+
 	$(".vertical-menu > a.menuOpt.active").removeClass('active');
     $(".vertical-menu").find("a#usuarios").addClass('active');
+</script>
 
+
+
+<script type="text/javascript">
+    var permisosUsuario;
+    $("#sercher").on('keydown', function(event){
+        if (event.which == 13) {
+            busqueda($(this).val());
+        }
+        if ($("#sercher").val() == '    ') {
+            console.log("buscar primare opcion");
+            busqueda('all');
+        }
+        if($("#sercher").val().length == 2 && $("#sercher").val().toString().includes(" ")){
+            console.log($("#sercher").val().trim() + "<-buscar segunda opcion->" + $("#sercher").val() + "|");
+            sugerir($("#sercher").val().trim());
+        }
+        if($("#sercher").val().length > 2){
+            console.log("buscar");
+            sugerir($("#sercher").val());
+        }
+        if($("#sercher").val().length < 2){
+            $("#listaSug").css("display", "none");
+        }
+    });
+
+    function sugerir($cadena) {
+        $.ajax({
+            method : 'POST',
+            url : 'sugerirusr',
+            dataType : 'json',
+            data: { 'criterio' : $cadena },
+            success: function(result){
+                // console.log(result);
+                var lista = "";
+                    $("#listaSug").css("display", "block");
+                    $("#listaSug").empty();
+                if (result.data.length > 0) {
+                    /*
+                    {"data":[{"idUsuario":"1","usuario":"ventas","contrasena":"ventas1","nivel":null,"estatus":null,"imgUsr":"\/img\/perfiles\/perfilUsuario.jpg","telefono":null,"domicilio":null,"tipoUsr":"Administrador_General"}]}*/
+                    $.each(result.data, function(i, v){
+                        // /img/perfiles/perfilUsuario.jpg     <img src='."+v.imgUsr+"'>
+                        lista = lista + "<li id='" + v.idUsuario + "' onclick='busqueda("+v.idUsuario+")' class='elem'><img src='"+v.imgUsr+"' style='width:10%;height:10%;vertical-align:-50%;' class='elem'>&nbsp"+v.usuario+"</li>";
+                    });
+                }
+                else{
+                    lista += "<li id='none' class='elem'>No hay resultados</li>";
+                }
+                $("#listaSug").append(lista);
+            }
+        });
+    }
+
+    $("#sercher1").on("click", function(event){
+        busqueda($(this).val());
+    });
+
+    function permisosDataTable(usuario){
+        permisosUsr(usuario);
+        this.permisosDeUsurio = $("input[name='permisosUsr']").val();
+        dataTablePermiso(usuario);
+    }
+
+    function dataTablePermiso(usuario){
+        // console.log("contenido de permisosDeUsurio");
+        // console.log(this.permisosDeUsurio);
+        permisosUsuario = this.permisosDeUsurio;
+
+        // console.log("contenido de permisos");
+        // console.log(permisosUsuario);
+        if ($.fn.DataTable.isDataTable( '#permisosDetalle' ) == true) {
+            restartDataTable($("#permisosDetalle"));
+        }
+        $('#permisosDetalle').DataTable({
+            "ajax": {
+                "type" : 'POST',
+                "url": '/desktop/todopermisos'
+            },
+            "columns":
+            [
+                { 
+                    "title" : "IdPermiso",
+                    "className" : "contentTable",
+                    "data" : "idOpcion"
+                },
+                { 
+                    "title" : "Permisos",
+                    "className" : "contentTable",
+                    "data" : "Nombre"                
+                },
+                { 
+                    "title" : "Activado",
+                    "className" : "contentTable",
+                    "targets": 0,
+                    "data": null,
+                    "render": function ( data ) {
+                        var contiene = indexOfValue(JSON.parse(permisosUsuario), data);
+                        if(contiene >= 0){
+                            var opcion = JSON.parse(permisosUsuario);
+                            if (opcion.data[contiene].Estatus == 1) {
+                                return "<span onclick='desactivar(this, "+usuario+")'>Si</span>";    
+                            }
+                            else{
+                                return "<span onclick='activar(this, "+usuario+")'>No</span>";
+                            }
+                            // return "<label class='switch'><input type='checkbox'><span class='slider round'></span></label>";
+                        }
+                        else{
+                            return "<span onclick='activar(this, "+usuario+")'>No</span>";
+                            // return "<label class='switch'><input type='checkbox'><span class='slider round'></span></label>";    
+                        }
+                        
+                    }
+                }
+            ],
+        });
+    }
+
+    function indexOfValue(ar, value){
+        var ind = -1;    
+        var array = ar.data;
+        console.log(array);
+        if(array.length > 0){
+            for (var i = 0; i < array.length; i++) {   
+                // console.log("compara : ");
+                // console.log(array[i]['idOpcion'] + " == " + value['idOpcion']);
+                if (array[i]['idOpcion'] == value['idOpcion']) {
+                    ind = i;
+                    break;
+                }
+            }
+        }
+
+        return ind;
+    }
+
+
+    function activar(ctrl, usr) {
+        var parent = $(ctrl).parent();
+
+        var permiso = $(parent).parent().find("td:nth-child(1)").text();
+
+        $(ctrl).remove();
+        $(parent).html('<span onclick="desactivar(this, ' + usr + ')">Si</span>');
+        editPermiso(usr, permiso, 1);
+    }
+
+    function desactivar(ctrl, usr) {
+        var parent = $(ctrl).parent();
+
+        var permiso = $(parent).parent().find("td:nth-child(1)").text();
+
+        $(ctrl).remove();
+        $(parent).html('<span onclick="activar(this, ' + usr + ')">No</span>');
+        editPermiso(usr, permiso, 0);
+    }
+
+    function editPermiso(idUsr, idOpt, status){
+        $.ajax({
+            method : 'POST',
+            url : 'editpermiso',
+            dataType : 'json',
+            data: { 'usr' : idUsr, 'opcion' : idOpt, 'status' : status },
+            success: function(result){
+                console.log(result);
+            }
+        });
+    }
+
+    var criterio;
+    function busqueda(criterio){
+        this.criterio = criterio;
+        if ($.fn.DataTable.isDataTable( '#myTable' ) == true) {
+            restartDataTable($("#myTable"));
+        }
+        $('#myTable').DataTable({
+            "ajax": {
+                "type" : 'POST',
+                "url": '/citas/getsuarios',
+                "data": {
+                  'buscar' : criterio
+                }
+            },
+			"columns":
+            [
+                { 
+                    "title" : "Id",
+                    "className" : "contentTable",
+                    "data" : null,
+                    "render": function ( data ) {
+                        return "<a onclick='cambio(this)' style='cursor:pointer;'>"+data.idUsuario+"</a>";
+                    } 
+                },
+                { 
+                    "title" : "Nombre",
+                    "className" : "contentTable",
+                    "data" : null,
+                    "render": function ( data ) {
+                        return "<a onclick='cambio(this)' style='cursor:pointer;'>"+data.nombre+"</a>";
+                    }
+                },
+                { 
+                    "title" : "Telefono",
+                    "className" : "contentTable",
+                    "data" : null,
+                    "render": function ( data ) {
+                        return "<a onclick='cambio(this)' style='cursor:pointer;'>"+data.tel+"</a>";
+                    }
+                },
+                { 
+                    "title" : "Mail",
+                    "className" : "contentTable",
+                    "data" : null,
+                    "render": function ( data ) {
+                        return "<a onclick='cambio(this)' style='cursor:pointer;'>"+data.mail+"</a>";
+                    }
+                },
+                {
+                    "title" : "Tipo usuario",
+                    "className" : "contentTable",
+                    "data" : null,
+                    "render": function ( data ) {
+                        return "<a onclick='cambio(this)' style='cursor:pointer;'>"+data.tipoUsuario+"</a>";
+                    }
+                }
+            ],
+        });
+    }
+
+    function cambio(ctrl) {
+        $("#myTable > tbody").children().removeClass("selected");
+        $(ctrl).parent().parent().addClass("selected");
+        var usr = $(ctrl).parent().parent().find("td>a")[0];
+        var idUsr = $(usr).text();
+        $("#detalles").fadeIn("slow");
+
+        if($("#hdnIdUsuario").length > 0){
+            $("#hdnIdUsuario").remove();
+            $("body").append("<input id='hdnIdUsuario' type='hidden' value='" + idUsr + "'>");    
+        }
+        else{
+            $("body").append("<input id='hdnIdUsuario' type='hidden' value='" + idUsr + "'>");    
+        }
+        
+
+        $("#tab4Locales").click();
+    }
+
+    $("#tab4Locales").on('click', function(event){
+        $.ajax({
+            method : 'POST',
+            url : 'busqusuarios',
+            dataType : 'json',
+            data: { 'buscar' : $("#hdnIdUsuario").val() },
+            success: function(result){
+                var control = "";
+                $.each(result.data, function(i, v){
+
+                    var string = "<option id='1'" + ((v.tipoUsr == "Prospecto") ? " selected>": ">") + "Prospecto</option>";
+                    string += "<option id='2'" + ((v.tipoUsr == "Cliente") ? " selected>" : ">") + "Cliente</option>";
+                    string += "<option id='3'" + ((v.tipoUsr == "Brocker_Interno") ? " selected>" : ">") + "Brocker_Interno</option>";
+                    string += "<option id='4'" + ((v.tipoUsr == "Brocker_Externo") ? " selected>" : ">") + "Brocker_Externo</option>";
+                    string += "<option id='5'" + ((v.tipoUsr == "Administrador_Plaza") ? " selected>" : ">") + "Administrador_Plaza</option>";
+                    string += "<option id='6'" + ((v.tipoUsr == "Administrador_General") ? " selected>" : ">") + "Administrador_General</option>";
+                    string += "<option id='7'" + ((v.tipoUsr == "Supervisor_Vendedores_Interno") ? " selected>" : ">") + "Supervisor_Vendedores_Interno</option>";
+                    string += "<option id='8'" + ((v.tipoUsr == "Supervisor_Vendedores_Externo") ? " selected>" : ">") + "Supervisor_Vendedores_Externo</option>";
+                    string += "<option id='9'" + ((v.tipoUsr == "Gerente_Ventas") ? " selected>" : ">") + "Gerente_Ventas</option>";
+                    string += "<option id='10'" + ((v.tipoUsr == "Sin_Asignar") ? " selected>" : ">") + "Sin_Asignar</option>";
+                    
+                    // $(parent).html("<select id='cambio'>"+string+"</select><br><i class='fa fa-check fa-1' onclick='save(this)' aria-hidden='true' style='padding: 1.5%;background: green;'></i>&nbsp&nbsp<i class='fa fa-times fa-1' onclick='cancel(this)' aria-hidden='true' style='padding: 1.5% 2.5%;background: red;'></i>");
+
+
+                    control += "<div class='groupDetails' style='cursor:default;'><label for='idUsuario' class='groupFormDetails'>IdUsuario</label><br><p class='dispDefault'>'" + v.idUsuario + "'<i class='fa fa-pencil fa-1 edit-disabled' haria-hidden='true'> editar</i></p><input class='edicionInput' onfocusout='guardar(this)' id='idUsuario' name='idUsuario' type='text' value='" + v.idUsuario + "'/></div>" +
+                    "<div class='groupDetails'><label for='usuario' class='groupFormDetails'>Nombre de Usuario</label><br><p class='dispDefault' onmouseover='enableEdit(this)'>'" + v.usuario + "'<i class='fa fa-pencil fa-1 edit-disabled' haria-hidden='true' onclick='cambioSwitch(this)'> editar</i></p><input class='edicionInput' onfocusout='guardar(this)' id='usuario' name='usuario' type='text' value='" + v.usuario + "'/></div>" +
+                    "<div class='groupDetails'><label for='nombre' class='groupFormDetails'>Nombre</label><br><p class='dispDefault' onmouseover='enableEdit(this)'>'" + v.nombre + "'<i class='fa fa-pencil fa-1 edit-disabled' haria-hidden='true' onclick='cambioSwitch(this)'> editar</i></p><input class='edicionInput' onfocusout='guardar(this)' id='nombre' name='nombre' type='text' value='" + v.nombre + "'/></div>" +
+                    "<div class='groupDetails'><label for='contrasena' class='groupFormDetails'>Contraseña</label><br><p class='dispDefault' onmouseover='enableEdit(this)'>'" + v.contrasena + "'<i class='fa fa-pencil fa-1 edit-disabled' haria-hidden='true' onclick='cambioSwitch(this)'> editar</i></p><input class='edicionInput' onfocusout='guardar(this)' id='contrasena' name='contrasena' type='text' value='" + v.contrasena + "'/></div>" +
+                    "<div class='groupDetails'><label for='telefono' class='groupFormDetails'>Teléfono</label><br><p class='dispDefault' onmouseover='enableEdit(this)'>'" + v.telefono + "'<i class='fa fa-pencil fa-1 edit-disabled' haria-hidden='true' onclick='cambioSwitch(this)'> editar</i></p><input class='edicionInput' onfocusout='guardar(this)' onkeydown='onlyNumber(this)' id='telefono' name='telefono' type='tel' value='" + v.telefono + "'/></div>" +
+                    "<div class='groupDetails'><label for='tipoUsr' class='groupFormDetails'>TipoUsr</label><br><p class='dispDefault' onmouseover='enableEdit(this)'>'" + v.tipoUsr + "'<i class='fa fa-pencil fa-1 edit-disabled' haria-hidden='true' onclick='cambioSwitch(this)'> editar</i></p><select class='edicionInput' onfocusout='guardar(this)' id='tipoUsr' name='tipoUsr'>"+string+"</select></div>" +
+                    "<div class='groupDetails'><label for='estatus' class='groupFormDetails'>Estatus</label><br><p class='dispDefault' onmouseover='enableEdit(this)'>'" + v.estatus + "'<i class='fa fa-pencil fa-1 edit-disabled' haria-hidden='true' onclick='cambioSwitch(this)'> editar</i></p><input class='edicionInput' onfocusout='guardar(this)' id='estatus' name='estatus' type='text' value='" + v.estatus + "'/></div>" +
+                    "<div class='groupDetails'><label for='fchNacimiento' class='groupFormDetails'>Fecha de Nacimiento</label><br><p class='dispDefault' onmouseover='enableEdit(this)'>'" + v.fchNacimiento + "'<i class='fa fa-pencil fa-1 edit-disabled' haria-hidden='true' onclick='cambioSwitch(this)'> editar</i></p><input class='edicionInput' onfocusout='guardar(this)' id='fchNacimiento' name='fchNacimiento' type='date' value='" + v.fchNacimiento + "'/></div>" +
+                    "<div class='groupDetails'><label for='rfc' class='groupFormDetails'>RFC</label><br><p class='dispDefault' onmouseover='enableEdit(this)'>'" + v.rfc + "'<i class='fa fa-pencil fa-1 edit-disabled' haria-hidden='true' onclick='cambioSwitch(this)'> editar</i></p><input class='edicionInput' onfocusout='guardar(this)' id='rfc' name='rfc' type='text' value='" + v.rfc + "'/></div>" +
+                    "<div class='groupDetails'><label for='curp' class='groupFormDetails'>CURP</label><br><p class='dispDefault' onmouseover='enableEdit(this)'>'" + v.curp + "'<i class='fa fa-pencil fa-1 edit-disabled' haria-hidden='true' onclick='cambioSwitch(this)'> editar</i></p><input class='edicionInput' onfocusout='guardar(this)' id='curp' name='curp' type='text' value='" + v.curp + "'/></div>" +
+                    "<div class='groupDetails'><label for='domicilio' class='groupFormDetails'>Domicilio</label><br><p class='dispDefault' onmouseover='enableEdit(this)'>'" + v.domicilio + "'<i class='fa fa-pencil fa-1 edit-disabled' haria-hidden='true' onclick='cambioSwitch(this)'> editar</i></p><input class='edicionInput' onfocusout='guardar(this)' id='domicilio' name='domicilio' type='text' value='" + v.domicilio + "'></div>";
+                });
+                $("#contenidoTabs").html($(control).hide());
+                $("#contenidoTabs").children().show();
+                $("#contenidoTabs").children().find("p").hide();
+                $("#contenidoTabs").children().find("p").fadeIn("slow");
+            }
+        });
+    });
+    $("#tab1Complejos").on('click', function(event){
+        $("#contenidoTabs").html("<table id='historial'></table>");
+
+        if ($.fn.DataTable.isDataTable( '#historial' ) == true) {
+            restartDataTable($("#historial"));
+        }
+        $("#historial").DataTable({
+            "ajax": {
+                "type" : 'POST',
+                "data": {
+                  'criterio' : $("#hdnIdUsuario").val()
+                },
+                "url": '/desktop/busqhistorial'
+            },
+            "columns":
+            [
+                { 
+                    "title" : "Id Historial",
+                    "className" : "contentTable",
+                    "data" : "idHistorial"
+                },
+                { 
+                    "title" : "Fecha",
+                    "className" : "contentTable",
+                    "data" : "fecha"                
+                },
+                { 
+                    "title" : "Módulo",
+                    "className" : "contentTable",
+                    "data" : "modulo"
+                },
+                { 
+                    "title" : "Acción",
+                    "className" : "contentTable",
+                    "data" : "accion"                
+                },
+                { 
+                    "title" : "Descriptión",
+                    "className" : "contentTable",
+                    "data" : "descripcion"
+                },
+                { 
+                    "title" : "Direccion IP",
+                    "className" : "contentTable",
+                    "data" : "ip"                
+                },
+                { 
+                    "title" : "Dispositivo",
+                    "className" : "contentTable",
+                    "data" : "dispositivo"
+                }
+            ],
+        });
+    });
+    $("#tab3Pisos").on('click', function(event){
+        $("#contenidoTabs").html("<table id='permisosDetalle'></table>");
+        permisosDataTable($("#hdnIdUsuario").val());
+    });
+
+
+
+
+    function cambioSwitch(ctrl) {
+        $(ctrl).parent().css("display", "none");
+        $(ctrl).parent().next().css("display", "block");
+        $(ctrl).parent().next().focus();
+    }
+
+    function enableEdit(ctrl) {
+        $(".groupDetails").find("p > i").removeClass("edit-abled");
+        $(".groupDetails").find("p > i").addClass("edit-disabled");
+        $(ctrl).children().removeClass("edit-disabled");
+        $(ctrl).children().addClass("edit-abled");
+    }
+
+    function onlyNumber(ctrl){
+        var event = $(ctrl).val();
+        var num = event.charAt(event.length - 1).charCodeAt( 0 );
+        if (num > 96 && num < 123) {
+            swal("Sólo datos numericos");
+            $(ctrl).val("");
+        }
+
+    }
+
+    function guardar(ctrl){
+        // permisosExtra($("#hdnIdUsuario").val());
+        var value = $(ctrl).val();
+        var formAux = "";
+        var index = $(ctrl).parent().index();
+        var exist = "";
+        var cambioPermiso = false;
+
+        $.each($(".groupDetails").find("p"), function(i, v){
+             if(i == index && i == 5 && ($(v).text()) != "'" + value + "'") {
+                 cambioPermiso = true;
+             }
+             exist = (i == index) ? "'" + value + "'" : ($(v).text());
+            formAux += "<input value='"+ exist.split('\'')[1] +"' name='"+i+"' />";
+        });
+
+        $("body").append($("<form id='formAux'>" + formAux + "</form>").hide());
+        
+        
+        
+        if(cambioPermiso == true){
+            permisosExtra($("#hdnIdUsuario").val());
+            setTimeout(function() {
+                var control = $("#permisosExtra").val();
+                if(control.length > 0){
+                    $.when( modal() ).then( function() {
+                        $("div.swal-text").append("<p>" + control.toString() + "</p>");    
+                    }); 
+                }
+            }, 100);
+        }
+        
+            if($(formAux).length > 0){
+                $.ajax({
+                    method : 'POST',
+                    url : 'cambiousuario',
+                    dataType : 'json',
+                    data: $("#formAux").serialize(),
+                    success: function(result){
+                        console.log(result);
+                    }
+                });
+            }    
+        
+        
+
+        // $("#permisosExtra").remove();
+
+        $("#formAux").remove();
+
+        $(ctrl).parent().find("p.dispDefault").css("display", "block");
+        $(ctrl).parent().find("p.dispDefault").html( "'"+value+"'" + "<i class='fa fa-pencil fa-1 edit-disabled' haria-hidden='true' onclick='cambioSwitch(this)'> editar</i>");
+
+        $(ctrl).css("display", "none");
+    }
+
+    function modal(){
+        swal("Cambiar tipo de usuario", "Se cambiarán los permisos de este usuario, elige Conservar permisos si quieres conservar sus permisos. Elige Relegar permisos si quieres retirar los permisos que tiene! ", {
+            buttons: {
+                cancel: "Relegar permisos",
+                catch: {
+                    text : "Conservar permisos",
+                    value : true
+                }
+            },
+        })
+        .then((value) => {
+            switch (value) {
+                case true:
+                    swal("Permisos conservados", "Permisos guardados", "success");    
+                  break;
+                default:
+                      $.ajax({
+                        method : 'POST',
+                        url : 'eliminarpermisosextra',
+                        dataType : 'json',
+                        data: { 'usuario' : $("#hdnIdUsuario").val() },
+                        success: function(result){
+                            console.log(result);
+                        }
+                    });
+                      swal("Permisos Retirados", "Se ELIMINARON los permisos", "success");
+                  break;
+            }
+
+        });
+    }
+
+    function cancel(act) {
+        var parent = $(act).parent();
+        var insert = $("a#auxCtrl").clone();
+        $(insert).attr("id", " ");
+        $(parent).html($(insert).show());
+        $("a#auxCtrl").remove();
+        busqueda(this.criterio);
+    }
+
+    function save(ctrl){
+        var parent = $(ctrl).parent().parent();
+        // console.log(parent);
+        var formAux = "";
+        $.each($(parent).children(), function(i, v){
+             var exist = ($(v).find("a").length > 0 )?$(v).find("a").text():($(v).find("input").length > 0 )?$(v).find("input").val():$(v).find("select option:selected").attr('id');
+            formAux += "<input value='"+ exist +"' name='"+i+"' />";
+            
+        });
+
+        $("body").append($("<form id='formAux'>" + formAux + "</form>").hide());
+
+        if($(formAux).length > 0)
+        $.ajax({
+            method : 'POST',
+            url : 'cambiousr',
+            dataType : 'json',
+            data: $("#formAux").serialize(),
+            success: function(result){
+                console.log(result);
+            }
+        });
+
+        busqueda(this.criterio);
+        $("a#auxCtrl").remove();
+        $("#formAux").remove();
+    }
+
+    function bsqHistorial(criterio){
+        console.log(criterio);
+        if ($.fn.DataTable.isDataTable( '#myTable' ) == true) {
+            restartDataTable($("#myTable"));
+        }
+        $("#myTable").DataTable({
+            "ajax": {
+                "type" : 'POST',
+                "data": {
+                  'criterio' : criterio
+                },
+                "url": '/desktop/busqhistorial'
+            },
+            "columns":
+            [
+                { 
+                    "title" : "Id Historial",
+                    "className" : "contentTable",
+                    "data" : "idHistorial"
+                },
+                { 
+                    "title" : "Fecha",
+                    "className" : "contentTable",
+                    "data" : "fecha"                
+                },
+                { 
+                    "title" : "Módulo",
+                    "className" : "contentTable",
+                    "data" : "modulo"
+                },
+                { 
+                    "title" : "Acción",
+                    "className" : "contentTable",
+                    "data" : "accion"                
+                },
+                { 
+                    "title" : "Descriptión",
+                    "className" : "contentTable",
+                    "data" : "descripcion"
+                },
+                { 
+                    "title" : "Direccion IP",
+                    "className" : "contentTable",
+                    "data" : "ip"                
+                },
+                { 
+                    "title" : "Dispositivo",
+                    "className" : "contentTable",
+                    "data" : "dispositivo"
+                }
+            ],
+        });
+    }
+    
+    var permisosDeUsurio;
+    function permisosUsr(usuario){
+        var permisos;
+        $.ajax({
+            method : 'POST',
+            url : '/desktop/permisos',
+            dataType : 'json',
+            data: { 'idUsuario' : usuario },
+            success: function(result){
+                // console.log(result);
+                permisos = JSON.stringify(result);
+                permisosUsuario = permisos;
+                // console.log("permisosUsr ajax");
+                // console.log(permisos.data);
+                // this.permisosDeUsurio = result.data;
+                $("input[name='permisosUsr']").val(result.data);
+                // console.log("agregar val " + result.data);
+                // console.log($("input[name='permisosUsr']").val());
+            }
+        });
+        // console.log("permisosUsr fuera ajax");
+        // console.log($("input[name='permisosUsr']").val());
+        return permisos;        
+    }
+
+    function permisosExtra(usuario) {
+        var permisosExtra = "<input id='permisosExtra' type='hidden' value=''>";
+        $("body").append(permisosExtra);
+        $.ajax({
+            method : 'POST',
+            url : 'permisosextra',
+            dataType : 'json',
+            data: { 'usuario' : usuario },
+            success: function(result){
+                if(result.status == 'success'){
+                    var permisos = "<h5><strong>Permisos del usuario</strong><h5>";
+                    $.each(result.data, function(i, v){
+                        permisos += "<p>El permiso : <strong>"+v['nombre']+"</strong> se encuentra <strong>"+((v['estatus'] == 1)?'<span class="color: #0f730f;">Habilitado<span>':'<span class="color: #ec2222;">Deshabilitado<span>')+"</strong></p>";
+                    });
+                    console.log(permisos);
+                    $("#permisosExtra").val(permisos);
+                }
+            }
+        });
+    }
+
+    function restartDataTable(table){
+        table.dataTable().fnDestroy();
+        table.empty();
+    }
+
+    $(document).ready(function(){
+        // var permisosUsuario = permisosUsr();
+        // console.log(permisosUsuario);
+        // permisosDataTable(2);
+    });
+
+
+
+    $(window).on('mousemove', function(event){
+        if(event.target.className.toString().includes('elem') == false){
+            $("#listaSug").css("display", "none");
+        }    
+        if (event.target.className != "dispDefault" && event.target.className.toString().includes("edit-abled") != true) {
+               $(".groupDetails").find("p > i").removeClass("edit-abled");
+            $(".groupDetails").find("p > i").addClass("edit-disabled");
+        }
+    });
+    
+    
 
 </script>

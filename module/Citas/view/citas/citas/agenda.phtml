@@ -49,11 +49,13 @@ YUI().use(
 
     var eventRecorder = new Y.SchedulerEventRecorder();
 
+    var today = new Date();
+
     new Y.Scheduler(
       {
         activeView: weekView,
         boundingBox: '#myScheduler',
-        date: new Date(2017, 11, 25),
+        date: new Date(),
         eventRecorder: eventRecorder,
         items: events,
         render: true,
@@ -62,4 +64,7 @@ YUI().use(
     );
   }
 );
+
+
+
 </script>

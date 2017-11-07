@@ -26,9 +26,7 @@ class Usuarios extends TableGateway
     }
 
     public function getAllUsuarios(){
-        $sqlUsuarios = "SELECT u.idTab_Usuario AS idUsuario, u.Nombre AS nombre, u.Usuario AS usuario, u.PASsword AS pswd, u.Apellidos AS apat, u.Telefono AS tel, u.Email AS mail, u.Direccion AS dir, tu.idTab_TipoUsuario AS idTipoUsuario, tu.Nombre AS tipoUsuario 
-            FROM tab_usuarios u 
-            JOIN tab_tipousuario tu on tu.idTab_TipoUsuario = u.idTab_Usuario; ";
+        $sqlUsuarios = "SELECT u.idTab_Usuario AS idUsuario, u.Nombre AS nombre, u.Usuario AS usuario, u.PASsword AS pswd, u.Apellidos AS apat, u.Foto as imgUsr, u.Telefono AS tel, u.Email AS mail, u.Direccion AS dir, tu.idTab_TipoUsuario AS idTipoUsuario, tu.Nombre AS tipoUsuario FROM tab_usuarios u JOIN tab_tipousuario tu on tu.idTab_TipoUsuario = u.idTab_Usuario; ";
 
         return $this->adapter->query($sqlUsuarios, Adapter::QUERY_MODE_EXECUTE)->toArray();
     }
@@ -48,6 +46,23 @@ class Usuarios extends TableGateway
             FROM tab_usuarios u 
             JOIN tab_tipousuario tu on tu.idTab_TipoUsuario = u.idTab_Usuario
             WHERE u.Nombre like '%{$criterio}%' || u.Usuario like '%{$criterio}%' || u.idTab_Usuario like '%{$criterio}%'; ";
+        return $this->adapter->query($sqlUsuarios, Adapter::QUERY_MODE_EXECUTE)->toArray();
+    } 
+
+
+    /* Pacientes*/
+    public function getAllPacientes(){
+        $sqlUsuarios = "SELECT u.idTab_Usuario AS idUsuario, u.Nombre AS nombre, u.Usuario AS usuario, u.PASsword AS pswd, u.Apellidos AS apat, u.Foto as imgUsr, u.Telefono AS tel, u.Email AS mail, u.Direccion AS dir, tu.idTab_TipoUsuario AS idTipoUsuario, tu.Nombre AS tipoUsuario FROM tab_usuarios u JOIN tab_tipousuario tu on tu.idTab_TipoUsuario = u.idTab_Usuario WHERE tu.idTab_TipoUsuario = 3; ";
+
+        return $this->adapter->query($sqlUsuarios, Adapter::QUERY_MODE_EXECUTE)->toArray();
+    }
+
+    public function getSugestPacientes($criterio){
+        $criterio = trim($criterio);
+        $sqlUsuarios = "SELECT u.idTab_Usuario AS idUsuario, u.Nombre AS nombre, u.Usuario AS usuario, u.PASsword AS pswd, u.Apellidos AS apat, u.Telefono AS tel, u.Email AS mail, u.Direccion AS dir, tu.idTab_TipoUsuario AS idTipoUsuario, tu.Nombre AS tipoUsuario, Foto as imgUsr 
+            FROM tab_usuarios u 
+            JOIN tab_tipousuario tu on tu.idTab_TipoUsuario = u.idTab_Usuario
+            WHERE u.Nombre like '%{$criterio}%' || u.Usuario like '%{$criterio}%' || u.idTab_Usuario like '%{$criterio}%' && tu.idTab_TipoUsuario = 3; ";
         return $this->adapter->query($sqlUsuarios, Adapter::QUERY_MODE_EXECUTE)->toArray();
     } 
 

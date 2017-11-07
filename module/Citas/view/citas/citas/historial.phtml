@@ -1,8 +1,79 @@
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+
 <div id="modal">
     <!-- Page content -->
     <h1>Hiistorial</h1>
+
+</div>
+
+<div id="content-historial">
+	<table id="tblHistorial"></table>
 </div>
 <script type="text/javascript">
 	$(".vertical-menu > a.menuOpt.active").removeClass('active');
     $(".vertical-menu").find("a#historial").addClass('active');
+
+    function gethistorial() {
+    	
+    }
+
+    function dataTablePermiso(usuario){
+        permisosUsuario = this.permisosDeUsurio;
+
+        if ($.fn.DataTable.isDataTable( '#tblHistorial' ) == true) {
+            restartDataTable($("#tblHistorial"));
+        }
+        $('#tblHistorial').DataTable({
+            "ajax": {
+                "type" : 'POST',
+                "url": 'gethistorial'
+            },
+            "columns":
+            [
+                { 
+                    "title" : "Clave Usuario",
+                    "className" : "contentTable",
+                    "data" : "idUsr"
+                },
+                { 
+                    "title" : "Seccion",
+                    "className" : "contentTable",
+                    "data" : "seccion"                
+                },
+                { 
+                    "title" : "Acción",
+                    "className" : "contentTable",
+                    "data" : "action"
+                },
+                { 
+                    "title" : "Descripción",
+                    "className" : "contentTable",
+                    "data" : "descripcion"                
+                },
+                { 
+                    "title" : "Fecha",
+                    "className" : "contentTable",
+                    "data" : "fecha"                
+                },
+                { 
+                    "title" : "Dispositivo",
+                    "className" : "contentTable",
+                    "data" : "disp"
+                },
+                { 
+                    "title" : "Dirección IP",
+                    "className" : "contentTable",
+                    "data" : "ip"
+                }
+            ]
+        });
+    }
+
+    function restartDataTable(table){
+        table.dataTable().fnDestroy();
+        table.empty();
+    }
+
+    dataTablePermiso();
 </script>
