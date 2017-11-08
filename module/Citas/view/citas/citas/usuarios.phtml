@@ -1,15 +1,14 @@
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<!-- <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> -->
 <!-- <script type="text/javascript" src="/js/js/modales.js" async></script> -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
 
-<script src="/js/jquery.number.js"></script>
+<!-- <script src="/js/jquery.number.js"></script> -->
 <style type="text/css">
     body{
         /*font-size: 1em !important;*/
@@ -303,6 +302,7 @@ div.tab button.active {
         </div>
         <div class="resultadosBusqueda">
             <table id="myTable"></table>
+            <table id="tblUser"></table>
             <table id="permisos"></table>
         </div>
         <div id="detalles" style="display: none;">
@@ -845,15 +845,15 @@ document.getElementById("defaultOpen").click();*/
     var criterio;
     function busqueda(criterio){
         this.criterio = criterio;
-        if ($.fn.DataTable.isDataTable( '#myTable' ) == true) {
-            restartDataTable($("#myTable"));
+        if ($.fn.DataTable.isDataTable('#tblUser') == true) {
+            restartDataTable($("#tblUser"));
         }
-        $('#myTable').DataTable({
+        $('#tblUser').DataTable({
             "ajax": {
                 "type" : 'POST',
                 "url": '/citas/getsuarios',
                 "data": {
-                  'buscar' : criterio
+                  'criterio' : criterio
                 }
             },
 			"columns":
@@ -903,7 +903,7 @@ document.getElementById("defaultOpen").click();*/
     }
 
     function cambio(ctrl) {
-        $("#myTable > tbody").children().removeClass("selected");
+        $("#tblUser > tbody").children().removeClass("selected");
         $(ctrl).parent().parent().addClass("selected");
         var usr = $(ctrl).parent().parent().find("td>a")[0];
         var idUsr = $(usr).text();
@@ -1176,10 +1176,10 @@ document.getElementById("defaultOpen").click();*/
 
     function bsqHistorial(criterio){
         console.log(criterio);
-        if ($.fn.DataTable.isDataTable( '#myTable' ) == true) {
-            restartDataTable($("#myTable"));
+        if ($.fn.DataTable.isDataTable( '#tblUser' ) == true) {
+            restartDataTable($("#tblUser"));
         }
-        $("#myTable").DataTable({
+        $("#tblUser").DataTable({
             "ajax": {
                 "type" : 'POST',
                 "data": {

@@ -209,10 +209,17 @@ class CitasController extends AbstractActionController
         $identify = $this->auth->getStorage()->read();
         if ($identify) {
             $this->Adapter = $this->getServiceLocator()->get('Zend\Db\Adapter');
-            $DBUsuarios = new Usuarios($this->Adapter);
-            $usuario = $DBUsuarios->getAllUsuarios();
+            $busqueda = $this->getRequest()->getPost('criterio');
 
-            $view = new ViewModel(['Json' => json_encode(['data' => $usuario])]);
+            $DBUsuarios = new Usuarios($this->Adapter);
+            if ($busqueda == 'all') {
+                $usuario = $DBUsuarios->getAllUsuarios();
+            }
+            else{
+                $usuario = $DBUsuarios->getBsqlUsuarios($busqueda);
+            }
+
+            $view = new ViewModel(['Json' => json_encode(['data' =>  $usuario ])]);
             $view->setTemplate('citas/index/json');
             $view->setTerminal(true);
             return $view;
@@ -241,7 +248,7 @@ class CitasController extends AbstractActionController
 
 
     // /CONTROLLER sugerirusuarios
-    public function sugerirusuariosAction(){
+    public function sugerirusrAction(){
         $identify = $this->auth->getStorage()->read();
         if ($identify) {
             $busqueda = $this->getRequest()->getPost('criterio');
