@@ -32,83 +32,161 @@
                 });
             }
 
-var lstEventos = [];
-            var test = lstAjaxEventos(test).then( (success) => {
-                // console.log(success);
-                $.each(success['data'], function(i, v){
-                    var date = v['fechaCita'].split("-");
-                    // console.log("dateFECHA:::::::::"); 
-                    // console.log(new Date(v['fechaCita'].split("-")[0], v['fechaCita'][1], date[2].split(" ")[0], 1));
-                    var obj = "{color     : '#8d8'," +
-                                            "content   : " + v['nombreUsuario'] + " - " + v['idCita'] + "," +
-                                            "disabled  : true," +
-                                            "endDate   : " + new Date(v['fechaCita'].split("-")[0], v['fechaCita'].split("-")  [1], v['fechaCita'].split("-")[2].split(" ")[0], 1)  + "," +
-                                            "meeting   : true," +
-                                            "reminder  : true," +
-                                            "startDate : " + new Date(v['fechaCita'].split("-")[0], v['fechaCita'].split("-")  [1], v['fechaCita'].split("-")[2].split(" ")[0], 1) + "},";
-                    var array = JSON.parse(JSON.stringify(obj));
+        var lstEventos = [];
+        var test = lstAjaxEventos(test).then( (success) => {
+            // console.log(success);
+            $.each(success['data'], function(i, v){
+                var dateStart = new Date(v['fechaCita'].split("-")[0], v['fechaCita'].split("-")[1], v['fechaCita'].split("-")[2].split(" ")[0], v['fechaCita'].split("-")[1].split(":")[0]);
+                console.log(dateStart);
+                var hourEnd = (v['fechaCita'].split("-")[1].split(":")[0] + 30);
+                console.log("hour end " + hourEnd);
+                var dateEnd = new Date(v['fechaCita'].split("-")[0], v['fechaCita'].split("-")[1], v['fechaCita'].split("-")[2].split(" ")[0], 12 );
+                console.log(dateEnd);
+                var obj = {color : '#8d8',
+                        content : v['nombreUsuario'] + " - " + v['idCita'],
+                        disabled : true,
+                        endDate : dateEnd,
+                        meeting : true,
+                        reminder : true,
+                        startDate : dateStart };
+
+                    // var array = JSON.parse(JSON.stringify(obj));
 
                     lstEventos.push(obj);
                     // console.log("dentro THEN");
-                    // console.log(lstEventos);   
+                    
                 });
-                return lstEventos;
+                // return lstEventos;
+                // console.log(new Date(2017, 11, 11, 5));
+
+                // var obj = {
+                //     content: 'Partial Lunar Eclipse',
+                //     endDate: new Date(2017, 11, 11, 5),
+                //     startDate: new Date(2017, 11, 25, 1)
+                // }
+
+                // lstEventos.push(obj);
+
+
+                YUI().use(
+                    'aui-scheduler',
+                    function(Y) {
+                        var test = lstEventos;
+                        // var test4 = new Promise((reslve, reject)=>{ evento.getAllEvents('test'); });
+                        console.log("contenido:::::::::::::: Agenda");
+                        console.log(test);
+                        console.log("contenido:::::::::::::: Agenda");
+                        // console.log(test);
+
+                        // var events = [ {
+                        //     color: "#ff0000",
+                        //     disabled: true,
+                        //     content: 'Partial Lunar Eclipse',
+                        //     meeting: true,
+                        //     reminder: true,
+                        //     endDate: new Date(2017, 11, 25, 11),
+                        //     startDate: new Date(2017, 11, 25, 10)
+                        // } ];
+
+                        /*
+                {color     : '#8d8',content   : ventas apat - 1,disabled  : true,endDate   : Sun Dec 10 2017 01:00:00 GMT-0600 (Hora estándar central (México)),meeting   : true,reminder  : true,startDate : Sun Dec 10 2017 01:00:00 GMT-0600 (Hora estándar central (México))}
+                        */
+                        var events = lstEventos;
+                        //     [{
+                        //         content: 'Partial Lunar Eclipse',
+                        //         endDate: new Date(2017, 11, 25, 5),
+                        //         startDate: new Date(2017, 11, 25, 1)
+                        //     },
+                        //     {
+                        //         color: "#8d8",
+                        //         content: 'Earth Day Lunch',
+                        //         disabled: true,
+                        //         endDate: new Date(2017, 11, 22, 13),
+                        //         meeting: true,
+                        //         reminder: true,
+                        //         startDate: new Date(2017, 11, 22, 12)
+                        //     },
+                        //     {
+                        //         content: "Weeklong",
+                        //         endDate: new Date(2018, 0, 27),
+                        //         startDate: new Date(2018, 0, 21)
+                        //     }
+                        // ];
+                        var agendaView = new Y.SchedulerAgendaView();
+                        var dayView = new Y.SchedulerDayView();
+                        var weekView = new Y.SchedulerWeekView();
+                        var monthView = new Y.SchedulerMonthView();
+
+                        var eventRecorder = new Y.SchedulerEventRecorder();
+
+                        var today = new Date();
+
+                        new Y.Scheduler(
+                        {
+                            activeView: weekView,
+                            boundingBox: '#myScheduler',
+                            date: new Date(),
+                            eventRecorder: eventRecorder,
+                            items: events,
+                            render: true,
+                            views: [dayView, weekView, monthView, agendaView]
+                        });
+                });
+
+
             });
+
+// YUI().use(
+//     'aui-scheduler',
+//     function(Y) {
         
-        
-    
+//         // var test4 = new Promise((reslve, reject)=>{ evento.getAllEvents('test'); });
+//         console.log(lstEventos);
+//         console.log(test);
+//         var events = [ lstAjaxEventos ];
+//         /*
+// {color     : '#8d8',content   : ventas apat - 1,disabled  : true,endDate   : Sun Dec 10 2017 01:00:00 GMT-0600 (Hora estándar central (México)),meeting   : true,reminder  : true,startDate : Sun Dec 10 2017 01:00:00 GMT-0600 (Hora estándar central (México))}
+//         */
+//             // {
+//             //     content: 'Partial Lunar Eclipse',
+//             //     endDate: new Date(2017, 11, 11, 5),
+//             //     startDate: new Date(2017, 11, 25, 1)
+//             // },
+//             // {
+//             //     color: "#8d8",
+//             //     content: 'Earth Day Lunch',
+//             //     disabled: true,
+//             //     endDate: new Date(2017, 11, 22, 13),
+//             //     meeting: true,
+//             //     reminder: true,
+//             //     startDate: new Date(2017, 11, 22, 12)
+//             // },
+//             // {
+//             //     content: "Weeklong",
+//             //     endDate: new Date(2017, 11, 27),
+//             //     startDate: new Date(2017, 11, 21)
+//             // }
+//         // ];
 
-YUI().use(
-    'aui-scheduler',
-    function(Y) {
-        
-        // var test4 = new Promise((reslve, reject)=>{ evento.getAllEvents('test'); });
-        console.log(lstEventos);
-        console.log(test);
-        var events = [ lstAjaxEventos ];
-        /*
-{color     : '#8d8',content   : ventas apat - 1,disabled  : true,endDate   : Sun Dec 10 2017 01:00:00 GMT-0600 (Hora estándar central (México)),meeting   : true,reminder  : true,startDate : Sun Dec 10 2017 01:00:00 GMT-0600 (Hora estándar central (México))}
-        */
-            // {
-            //     content: 'Partial Lunar Eclipse',
-            //     endDate: new Date(2017, 11, 11, 5),
-            //     startDate: new Date(2017, 11, 25, 1)
-            // },
-            // {
-            //     color: "#8d8",
-            //     content: 'Earth Day Lunch',
-            //     disabled: true,
-            //     endDate: new Date(2017, 11, 22, 13),
-            //     meeting: true,
-            //     reminder: true,
-            //     startDate: new Date(2017, 11, 22, 12)
-            // },
-            // {
-            //     content: "Weeklong",
-            //     endDate: new Date(2017, 11, 27),
-            //     startDate: new Date(2017, 11, 21)
-            // }
-        // ];
+//         var agendaView = new Y.SchedulerAgendaView();
+//         var dayView = new Y.SchedulerDayView();
+//         var weekView = new Y.SchedulerWeekView();
+//         var monthView = new Y.SchedulerMonthView();
 
-        var agendaView = new Y.SchedulerAgendaView();
-        var dayView = new Y.SchedulerDayView();
-        var weekView = new Y.SchedulerWeekView();
-        var monthView = new Y.SchedulerMonthView();
+//         var eventRecorder = new Y.SchedulerEventRecorder();
 
-        var eventRecorder = new Y.SchedulerEventRecorder();
+//         var today = new Date();
 
-        var today = new Date();
-
-        new Y.Scheduler(
-        {
-            activeView: weekView,
-            boundingBox: '#myScheduler',
-            date: new Date(),
-            eventRecorder: eventRecorder,
-            items: events,
-            render: true,
-            views: [dayView, weekView, monthView, agendaView]
-        });
-});
+//         new Y.Scheduler(
+//         {
+//             activeView: weekView,
+//             boundingBox: '#myScheduler',
+//             date: new Date(),
+//             eventRecorder: eventRecorder,
+//             items: events,
+//             render: true,
+//             views: [dayView, weekView, monthView, agendaView]
+//         });
+// });
 
 </script>

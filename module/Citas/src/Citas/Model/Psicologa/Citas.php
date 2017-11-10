@@ -23,6 +23,10 @@ class Citas extends TableGateway
     }
 
     public  function getCitas(){
+        /*return "SELECT cit.idTab_Cita AS idCita, cit.idUsuario AS idUsr, cit.Fecha AS fecha, 
+            cit.FechaCita AS fechaCita, cit.Estatus AS estatus, concat(usr.Nombre, ' ', usr.Apellidos) as nombreUsuario
+            FROM tab_cita cit
+            JOIN tab_usuarios usr on usr.idTab_Usuario = cit.idUsuario;";*/
         return $this->adapter->query("SELECT cit.idTab_Cita AS idCita, cit.idUsuario AS idUsr, cit.Fecha AS fecha, 
         	cit.FechaCita AS fechaCita, cit.Estatus AS estatus, concat(usr.Nombre, ' ', usr.Apellidos) as nombreUsuario
 			FROM tab_cita cit

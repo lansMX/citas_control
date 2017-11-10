@@ -28,10 +28,10 @@ class IndexController extends AbstractActionController
     public function indexAction()
     {
         $this->dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter');
-		// $dataUsuario = new Usuarios($this->dbAdapter);            
+		$dataUsuario = new Usuarios($this->dbAdapter);            
   //           //$postulaciones = $dataRelVaUser->getAll_User($identify['idTab_Usuario']); 
-  //       $usuario = $dataUsuario->fetchAll();
-		// $index['usuario'] = $usuario;
+        $usuario = $dataUsuario->fetchAll();
+		$index['usuario'] = $usuario;
         
         // $this->layout()->sesion = $identify;
         $view = new ViewModel();
@@ -91,7 +91,16 @@ class IndexController extends AbstractActionController
         return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/index/index');
     }
 
+    //CONTROLLER test
+    public function testAction(){
+        #Adaptador
+        $this->dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter');
 
+        #Modelo
+        $DbUsuarios = new Usuarios($this->dbAdapter);
+        $RsUsuario = $DbUsuarios->fetchAll();  
+        return $RsUsuario;
+    }
     
 
 }
