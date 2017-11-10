@@ -16,9 +16,8 @@ use Citas\Model\Psicologa\Usuarios;
 use Citas\Model\Psicologa\Historial;
 use Citas\Model\Psicologa\Citas;
 
-class CitasController extends AbstractActionController
+class UsuariosController extends AbstractActionController
 {
-	
 	public $Adapter;// base de datos
     private $auth;//autenticacion Sesion
 
@@ -37,8 +36,8 @@ class CitasController extends AbstractActionController
 
         $index['usuario'] = $usuario;
         
-        $action = $this->getRequest()->getServer()->get('REQUEST_URI');
-        $this->addHistorial($action, "", "citas>index Vista");
+  //       $action = $this->getRequest()->getServer()->get('REQUEST_URI');
+  //       $this->addHistorial($action, "", "citas>index Vista");
 
         $this->layout('layout/layout');
         $this->layout()->sesion = $identify;
@@ -50,10 +49,15 @@ class CitasController extends AbstractActionController
     	return new ViewModel();
     }
 
+	public function citasAction(){
+    	return new ViewModel();
+    }
+
     public function agendaAction(){
         $identify = $this->auth->getStorage()->read();
 
         if ($identify) {
+
             // $action = $this->getRequest()->getServer()->get('REQUEST_URI');
             // $this->addHistorial($action, "", "citas>agenda Vista");
 
@@ -264,27 +268,6 @@ class CitasController extends AbstractActionController
 /*----------------------------------------------------------*
 *                        MODULO AGENDA                      *
 *-----------------------------------------------------------*/
-    //CONTROLLER agenda
-    public function citasAction(){
-        $identify = $this->auth->getStorage()->read();
-        if ($identify) {
-
-            $DBCitas = new Citas($this->getServiceLocator()->get("Zend\Db\Adapter"));
-            $agenda = $DBCitas->getCitas();
-
-            if ($agenda) {
-                $response = ["status" => "success", "message" => "Datos recuperados con éxito", "data" => $agenda ];
-            }
-            else {
-                $response = ["status" => "error", "message" => "Datos no recuperados", "data" => null ];
-            }
-
-            $view = new ViewModel( ['Json' => json_encode( $response )] );
-            $view->setTemplate('citas/index/json');
-            $view->setTerminal(true);
-            return $view;
-        }
-    }
   
 
 /*----------------------------------------------------------*

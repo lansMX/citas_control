@@ -12,8 +12,8 @@ namespace Citas\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Authentication\AuthenticationService;
-
 use Citas\Model\Psicologa\Usuarios;
+use Citas\Model\Psicologa\Historial;
 
 class IndexController extends AbstractActionController
 {

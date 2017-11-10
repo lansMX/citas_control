@@ -32,7 +32,7 @@ class Usuarios extends TableGateway
     }
 
     public function getBsqlUsuarios($criterio){
-        $sqlUsuarios = "SELECT u.idTab_Usuario AS idUsuario, u.Nombre AS nombre, u.Usuario AS usuario, u.PASsword AS pswd, u.Apellidos AS apat, u.Telefono AS tel, u.Email AS mail, u.Direccion AS dir, tu.idTab_TipoUsuario AS idTipoUsuario, tu.Nombre AS tipoUsuario 
+        $sqlUsuarios = "SELECT u.idTab_Usuario AS idUsuario, u.Nombre AS nombre, u.Usuario AS usuario, u.PAssword AS pswd, u.Apellidos AS apat, u.Telefono AS tel, u.Email AS mail, u.Direccion AS dir, tu.idTab_TipoUsuario AS idTipoUsuario, tu.Nombre AS tipoUsuario 
             FROM tab_usuarios u 
             JOIN tab_tipousuario tu on tu.idTab_TipoUsuario = u.idTab_Usuario
             WHERE u.Nombre like '%{$criterio}%' || u.Usuario like '%{$criterio}%' || u.idTab_Usuario = '{$criterio}'; ";

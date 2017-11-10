@@ -41,12 +41,28 @@ return array(
                     ),
                 ),
             ),
+            'usuarios'     => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'       => '/usuarios[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults'    => array(
+                        'controller' => 'Citas\Controller\Usuarios',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
         ),
     ),
    
     'controllers' => array(
         'invokables' => array(
             'Citas\Controller\Index' => Controller\IndexController::class,
+            // 'Citas\Controller\Oridnum' => Controller\OridnumController::class,
+            'Citas\Controller\Usuarios' => Controller\UsuariosController::class,
             'Citas\Controller\Citas' => Controller\CitasController::class
         ),
     ),
