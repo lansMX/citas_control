@@ -33,28 +33,19 @@
 
         var lstEventos = [];
         var test = lstAjaxEventos(test).then( (success) => {
-            // console.log(success);
             $.each(success['data'], function(i, v){
-                var dateStart = new Date(v['fechaCita'].split("-")[0], v['fechaCita'].split("-")[1], v['fechaCita'].split("-")[2].split(" ")[0], v['fechaCita'].split("-")[1].split(":")[0]);
-                console.log(dateStart);
-                var hourEnd = (v['fechaCita'].split("-")[1].split(":")[0] + 30);
-                console.log("hour end " + hourEnd);
-                var dateEnd = new Date(v['fechaCita'].split("-")[0], v['fechaCita'].split("-")[1], v['fechaCita'].split("-")[2].split(" ")[0], 12 );
-                console.log(dateEnd);
+                var dateStart = formatDate(v['fechaCita']);
+                var dateEnd = formatDateEnd(v['fechaCita']);
 
-                var datStart = formatDate(v['fechaCita']);
-                var datEnded = formatDateEnd(v['fechaCita']);
-                console.log("Strat : " + dateStart + " Ended " + datEnded);
-
-                var obj = {color : '#8d8',
+                var obj = {
+                        color : '#8d8',
                         content : v['nombreUsuario'] + " - " + v['idCita'],
                         disabled : true,
                         endDate : dateEnd,
                         meeting : true,
                         reminder : true,
-                        startDate : dateStart };
-
-                    // var array = JSON.parse(JSON.stringify(obj));
+                        startDate : dateStart 
+                    };
 
                     lstEventos.push(obj);
                 });
@@ -63,27 +54,8 @@
                 YUI().use(
                     'aui-scheduler',
                     function(Y) {
-                        var test = lstEventos;
-                        // var test4 = new Promise((reslve, reject)=>{ evento.getAllEvents('test'); });
-                        console.log("contenido:::::::::::::: Agenda");
-                        console.log(test);
-                        console.log("contenido:::::::::::::: Agenda");
-                        // console.log(test);
-
-                        // var events = [ {
-                        //     color: "#ff0000",
-                        //     disabled: true,
-                        //     content: 'Partial Lunar Eclipse',
-                        //     meeting: true,
-                        //     reminder: true,
-                        //     endDate: new Date(2017, 11, 25, 11),
-                        //     startDate: new Date(2017, 11, 25, 10)
-                        // } ];
-
-                        /*
-                        {color     : '#8d8',content   : ventas apat - 1,disabled  : true,endDate   : Sun Dec 10 2017 01:00:00 GMT-0600 (Hora estándar central (México)),meeting   : true,reminder  : true,startDate : Sun Dec 10 2017 01:00:00 GMT-0600 (Hora estándar contentral (México))}
-                        */
                         var events = lstEventos;
+                        console.log(events);
                         //     [{
                         //         content: 'Partial Lunar Eclipse',
                         //         endDate: new Date(2017, 11, 25, 5),
@@ -135,8 +107,9 @@
         var day = date.split('-')[2].split(' ')[0];
         var hour = date.split(' ')[1].split(':')[0];
         var min = date.split(' ')[1].split(':')[1];
-        console.log("day " + day + " hour " + hour + " min " + min);
-        var date = new Date(year, month, day, hour + ":" + min);
+        var stringHour = hour + ":" + min + ":" + 00;
+        var date = new Date(parseInt(year), parseInt(month), parseInt(day), parseInt(stringHour.split(":")[0]), parseInt(stringHour.split(":")[1]));
+        console.log("DATE COMPLETA ->" + date);
         return date;
     }
     
@@ -146,13 +119,26 @@
         var day = date.split('-')[2].split(' ')[0];
         var hour = date.split(' ')[1].split(':')[0];
         var min = date.split(' ')[1].split(':')[1];
-        console.log("day " + day + " hour " + hour + " min " + min);
-        var date = new Date(year, month, day, hour + ":" + min);
+        var stringHour = hour + ":" + min + ":00";
+        stringHour = sumHour(stringHour);
+        var date = new Date(parseInt(year), parseInt(month), parseInt(day), parseInt(stringHour.split(":")[0]), parseInt(stringHour.split(":")[1]));
         return date;
     }
 
+    function sumHour(hour){
+        var hora = hour.toString().split(":")[0];
+        var min = hour.toString().split(":")[1];
+        if (min == "30") {
+            hour = (parseInt(hour) + 1).toString();
+            min = "00";
+        }
+        else if(min == "00"){
+            min = "30";
+        }
+        return hour + ":" + min + ":00";
+    }
+
     function sumarMonth(month){
-        console.log(month);
         return month - 1;
     }
 
