@@ -1,0 +1,198 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/js/citas.js"></script>
+
+<style type="text/css">
+	#contenedor-consulta{
+		width: 100%;
+	}
+	#myProgress {
+	  	width: 100%;
+	    background-color: #ddd;
+	    height: 10px;
+	    /* margin: 7px 0px; */
+	    /* position: absolute; */
+	    display: inline-block;
+	    z-index: -30;
+	}
+
+	#myBar {
+	  	width: 1%;
+	    height: 10px;
+	    background-color: #4CAF50;
+	    /* display: inline-block; */
+	    position: absolute;
+	    z-index: 0;
+	}
+	.elem-step{
+		margin: -6px 10%;
+	    padding: 1px 5px;
+	    background: darkgray;
+	    float: left;
+	    z-index: 10000;
+    	position: relative;
+	}
+	/**/
+	.enable{
+		display: block;
+	}
+	.disable{
+		display: none;
+	}
+	.form-consulta{
+	    margin: 7% auto;
+	    width: auto;
+	    width: 50%;
+	}
+	/**/
+	.btn-opcion{
+	    box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
+	    background: #2B85E7 16px 12px no-repeat;
+    	box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
+    	color: rgba(255,255,255,.87);
+	}
+	
+	/**/
+	#opciones-formulario{
+		width: 100%;
+	}
+	#desplaza-opcion{
+		width: 40%;
+		margin: 0 auto;
+	}
+	#desplaza-opcion > div{
+		margin: 0 2.5%;
+		float: left;
+	}
+.group 			  { 
+  position:relative; 
+  margin-bottom:45px; 
+}
+input 				{
+  font-size:18px;
+  padding:10px 10px 10px 5px;
+  display:block;
+  width:300px;
+  border:none;
+  border-bottom:1px solid #757575;
+}
+input:focus 		{ outline:none; }
+
+/* LABEL ======================================= */
+label 				 {
+  color:#999; 
+  font-size:18px;
+  font-weight:normal;
+  position:absolute;
+  pointer-events:none;
+  left:5px;
+  top:10px;
+  transition:0.2s ease all; 
+  -moz-transition:0.2s ease all; 
+  -webkit-transition:0.2s ease all;
+}
+
+/* active state */
+input:focus ~ label, input:valid ~ label 		{
+  top:-20px;
+  font-size:14px;
+  color:#5264AE;
+}
+</style>
+
+<h1>Consulta</h1>
+
+<div id="opciones">
+	<div id="paciente">
+		<div id="buscador-usuarios"></div>
+		<div id="registrar"></div>
+	</div>
+</div>
+
+<div id="contenedor-consulta">
+	<div id="myProgress">
+		<div id="myBar"></div>
+		<div id="step_1" class="elem-step" title="Datos del paciente">1</div>
+		<div id="step_2" class="elem-step" title="Síntomas">2</div>
+		<div id="step_3" class="elem-step" title="Consulta">3</div>
+		<div id="step_4" class="elem-step" title="Tratamiento">4</div>
+	</div>
+	<div id="datos-paciente" class="step_1"></div>
+	<div id="datos-patologia" class="step_2"></div>
+	<div id="datos-procedimientos" class="step_3"></div>
+	<div id="datos-tratamiento" class="step_4"></div>
+
+	<div id="formularios">
+		<div id="form-datos-paciente">
+			<h4>Datos del paciente</h4>
+			<form id="datos-paciente" class="form-consulta enable">
+				<div class="group">      
+			      <input type="text" name="nombrePacinte" id="nombrePacinte" required>
+			      <span class="highlight"></span>
+			      <span class="bar"></span>
+			      <label>Nombre</label>
+			    </div>
+			    <div class="group">      
+			      <input type="text" name="nombrePacinte" id="nombrePacinte" required>
+			      <span class="highlight"></span>
+			      <span class="bar"></span>
+			      <label>Edad</label>
+			    </div>
+			    <div class="group">      
+			      <input type="text" name="nombrePacinte" id="nombrePacinte" required>
+			      <span class="highlight"></span>
+			      <span class="bar"></span>
+			      <label>Alergias</label>
+			    </div>
+			</form>
+		</div>
+		<div id="form-patologia">
+			<form id="patologia" class="form-consulta disable">
+				<div class="groupo-consulta">
+					<label>Síntomas</label>&nbsp<span>+</span><br>
+					<input type="text" name="sintomas">
+				</div>
+				<div class="groupo-consulta">
+					<label>Diagnóstico</label>&nbsp<span>+</span><br>
+					<input type="text" name="sintomas">
+				</div>
+			</form>
+		</div>
+		<div id="form-procedimientos">
+			<form id="procedimientos" class="form-consulta disable">
+				<div ></div>
+			</form>
+		</div>
+		<div id="form-tratamiento">
+			<form id="tratamiento" class="form-consulta disable">
+			</form>
+		</div>
+	</div>
+
+	<div id="opciones-formulario">
+		<div id="desplaza-opcion">
+			<div id="opcion-prev" class="btn btn-opcion">Anterior</div>
+			<div id="opcion-sig" class="btn btn-opcion">Siguiente</div>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+	function move() {
+      	var elem = document.getElementById("myBar");   
+      	var width = 1;
+      	var id = setInterval(frame, 10);
+      	function frame() {
+	        if (width >= 100) {
+	          	clearInterval(id);
+        	} else {
+          		width++; 
+          		elem.style.width = width + '%'; 
+        	}
+      	}
+    }
+</script>

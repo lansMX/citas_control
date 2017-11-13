@@ -27,6 +27,19 @@ class CitasController extends AbstractActionController
         $this->auth = new AuthenticationService();        
     }
     
+    //CONTROLLER panelprincipal
+    public function panelprincipalAction(){
+        $identify = $this->auth->getStorage()->read();
+        if ($identify) {
+            
+            $view = new ViewModel();
+            $this->layout('layout/layoutCitas');
+            $this->layout()->sesion = $identify;
+            return $view;
+        }   
+        return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/index/index');
+    }
+
     public function indexAction()
     {
         $identify = $this->auth->getStorage()->read();
@@ -158,6 +171,20 @@ class CitasController extends AbstractActionController
             $this->layout('layout/layoutCitas');
             $this->layout()->sesion = $identify;
             // $view->setTerminal(true);
+            return $view;
+        }   
+        return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/index/index');
+    }
+
+    //CONTROLLER consultar
+    public function consultarAction(){
+        $identify = $this->auth->getStorage()->read();
+
+        if ($identify) {
+            
+            $view = new ViewModel();
+            $this->layout('layout/layoutCitas');
+            $this->layout()->sesion = $identify;
             return $view;
         }   
         return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/index/index');
