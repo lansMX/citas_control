@@ -126,9 +126,9 @@ input:focus ~ label, input:valid ~ label 		{
 	<div id="datos-tratamiento" class="step_4"></div>
 
 	<div id="formularios">
-		<div id="form-datos-paciente">
+		<div id="form-datos-paciente" class="div-form enable">
 			<h4>Datos del paciente</h4>
-			<form id="datos-paciente" class="form-consulta enable">
+			<form id="datos-paciente" class="form-consulta">
 				<div class="group">      
 			      <input type="text" name="nombrePacinte" id="nombrePacinte" required>
 			      <span class="highlight"></span>
@@ -149,8 +149,8 @@ input:focus ~ label, input:valid ~ label 		{
 			    </div>
 			</form>
 		</div>
-		<div id="form-patologia">
-			<form id="patologia" class="form-consulta disable">
+		<div id="form-patologia" class="div-form disable">
+			<form id="patologia" class="form-consulta">
 				<div class="groupo-consulta">
 					<label>Síntomas</label>&nbsp<span>+</span><br>
 					<input type="text" name="sintomas">
@@ -161,13 +161,36 @@ input:focus ~ label, input:valid ~ label 		{
 				</div>
 			</form>
 		</div>
-		<div id="form-procedimientos">
-			<form id="procedimientos" class="form-consulta disable">
-				<div ></div>
+		<div id="form-procedimientos" class="div-form disable">
+			<form id="procedimientos" class="form-consulta">
+				<div class="group">      
+			      <input type="text" name="nombrePacinte" id="nombrePacinte" required>
+			      <span class="highlight"></span>
+			      <span class="bar"></span>
+			      <label>procedimiento</label>
+			    </div>
+			    <div class="group">      
+			      <input type="text" name="nombrePacinte" id="nombrePacinte" required>
+			      <span class="highlight"></span>
+			      <span class="bar"></span>
+			      <label>Alergias</label>
+			    </div>
 			</form>
 		</div>
-		<div id="form-tratamiento">
-			<form id="tratamiento" class="form-consulta disable">
+		<div id="form-tratamiento" class="div-form disable">
+			<form id="tratamiento" class="form-consulta">
+				<div class="group">      
+			      <input type="text" name="nombrePacinte" id="nombrePacinte" required>
+			      <span class="highlight"></span>
+			      <span class="bar"></span>
+			      <label>tratamiento</label>
+			    </div>
+			    <div class="group">      
+			      <input type="text" name="nombrePacinte" id="nombrePacinte" required>
+			      <span class="highlight"></span>
+			      <span class="bar"></span>
+			      <label>Alergias</label>
+			    </div>
 			</form>
 		</div>
 	</div>
@@ -182,6 +205,8 @@ input:focus ~ label, input:valid ~ label 		{
 
 
 <script type="text/javascript">
+	
+
 	function move() {
       	var elem = document.getElementById("myBar");   
       	var width = 1;
@@ -201,6 +226,36 @@ input:focus ~ label, input:valid ~ label 		{
     });
 
     $("#opcion-sig").click((event) => {
+    	if( $(".div-form.enable").index() < 3){
+    		var next = $(".div-form.enable").next();
+			$(".div-form.enable").hide('slow');
+			$(".div-form.enable").removeClass('enable');
+			$(next).addClass('enable').show('slow');
+			$(next).removeClass('disable');
+    	}
+    	else{
+    		var next = $(".div-form.enable").parent().children()[0];
+			$(".div-form.enable").hide('slow');
+			$(".div-form.enable").removeClass('enable');
+			$(next).addClass('enable').show('slow');
+			$(next).removeClass('disable');
+    	}
+    });
 
+    $("#opcion-prev").click((event) => {
+    	if( $(".div-form.enable").index() > 0){
+    		var next = $(".div-form.enable").prev();
+			$(".div-form.enable").hide('slow');
+			$(".div-form.enable").removeClass('enable');
+			$(next).addClass('enable').show('slow');
+			$(next).removeClass('disable');
+    	}
+    	else{
+    		var next = $(".div-form.enable").parent().children()[3];
+			$(".div-form.enable").hide('slow');
+			$(".div-form.enable").removeClass('enable');
+			$(next).addClass('enable').show('slow');
+			$(next).removeClass('disable');
+    	}
     });
 </script>
