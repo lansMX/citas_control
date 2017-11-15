@@ -28,7 +28,7 @@
 	    z-index: 0;
 	}
 	.elem-step{
-		margin: -6px 10%;
+		margin: -6px 0 0 18%;
 	    padding: 1px 5px;
 	    background: darkgray;
 	    float: left;
@@ -195,4 +195,12 @@ input:focus ~ label, input:valid ~ label 		{
         	}
       	}
     }
+
+    $("#nombrePacinte").on('keypress', (event) => {
+    	console.log(event.which);
+    });
+
+    $("#opcion-sig").click((event) => {
+
+    });
 </script>
