@@ -199,6 +199,7 @@ input:focus ~ label, input:valid ~ label {
 			      <label>Alergias</label>
 			    </div>
 			</form>
+			<input id="terminarCita" class="this" type="button" name="terminarCita" value="Terminar Consulta" required/>
 		</div>
 	</div>
 
@@ -216,6 +217,13 @@ input:focus ~ label, input:valid ~ label {
 	/*------------------------------*
 	*   Trigger animaciones js  	*
 	*-------------------------------*/
+
+	$('#terminarCita').on('click', (event) => {
+		guardarDatosPersonales();
+		guardarSintomas();
+		guardarTratamiento();
+		guardarConsulta();
+	});
 	
 	/* Opciones de desplazamiento formularios */
     $("#opcion-prev").click(() => {
@@ -239,19 +247,51 @@ input:focus ~ label, input:valid ~ label {
 	*-------------------------------*/	
 
     function guardarDatosPersonales(){
-
+    	$.ajax({
+    		method : 'POST',
+    		url : 'guardardatosPersonales',
+    		dataType : 'json',
+    		data : $('#form').serialize(),
+    		success : (result) => {
+    			console.log(result);
+    		}
+    	});
     }
 
     function guardarSintomas(){
-    	
+    	$.ajax({
+    		method : 'POST',
+    		url : 'guardarsintomas',
+    		dataType : 'json',
+    		data : $('#form').serialize(),
+    		success : (result) => {
+    			console.log(result);
+    		}
+    	});
     }
 
     function guardarConsulta(){
-
+    	$.ajax({
+    		method : 'POST',
+    		url : 'guardarconsulta',
+    		dataType : 'json',
+    		data : $('#form').serialize(),
+    		success : (result) => {
+    			console.log(result);
+    		}
+    	});
     }
 
     function guardarTratamiento(){
-
+    	$.ajax({
+    		method : 'POST',
+    		url : 'guardartratamiento',
+    		dataType : 'json',
+    		data : $('#form').serialize(),
+    		success : (result) => {
+    			console.log(result);
+    		}
+    	});
     }
 
     $("#nombrePacinte").on('keypress', (event) => {

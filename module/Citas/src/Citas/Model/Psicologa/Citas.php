@@ -37,7 +37,69 @@ class Citas extends TableGateway
         return $this->adapter->query("SELECT idTab_Historial AS idHistorial, idUsuario AS idUsr, Seccion AS seccion, Accion AS action, Description AS descripcion, Fecha AS fecha, Ip AS ip, Dispositivo AS disp FROM tab_historial WHERE idUsuario = '{$idUsuario}';", Adapter::QUERY_MODE_EXECUTE)->toArray();
     }
 
-    
+    /**
+    * Model guardarCampo
+    * @param idUsuario
+    */
+    public function guardarCampo($idUsuario){
+        try{
+            $sql_existe = "SELECT * WHERE id = '${'idUsuario'}';";
+            return $this->adapter->query($sql_existe, Adapter::QUERY_MODE_EXECUTE)->current();
+        }
+        catch(Exception $e){
+            return $e;
+        }
+    }
+
+   
+
+    /**
+    * Model guardarCampo
+    * @param idUsuario
+    */
+    public function guardarCampo($idUsuario){
+        try{
+            $sql_existe = "SELECT * WHERE id = '${'idUsuario'}';";
+            return $this->adapter->query($sql_existe, Adapter::QUERY_MODE_EXECUTE)->current();
+        }
+        catch(Exception $e){
+            return $e;
+        }
+    }
+
+
+
+    /**
+    * Model guardarCampo
+    * @param idUsuario
+    */
+    public function guardarCampo($idUsuario){
+        try{
+            $sql_existe = "SELECT * WHERE id = '${'idUsuario'}';";
+            return $this->adapter->query($sql_existe, Adapter::QUERY_MODE_EXECUTE)->current();
+        }
+        catch(Exception $e){
+            return $e;
+        }
+    }
+
+
+
+
+    /**
+    * Model guardarCampo
+    * @param idUsuario
+    */
+    public function guardarCampo($idUsuario){
+        try{
+            $sql_existe = "SELECT * WHERE id = '${'idUsuario'}';";
+            return $this->adapter->query($sql_existe, Adapter::QUERY_MODE_EXECUTE)->current();
+        }
+        catch(Exception $e){
+            return $e;
+        }
+    }
+
 }
 
 
