@@ -379,4 +379,68 @@ class CitasController extends AbstractActionController
         }
         return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/');
     }
+
+
+/*----------------------------------------------------------*
+*                      MODULO CONSULTA                     *
+*-----------------------------------------------------------*/
+    //CONTROLLER sugerenciausuariosconsulta
+    public function sugerenciausuariosconsultaAction(){
+        $identify = $this->auth->getStorage()->read();
+        if ($identify) {
+            $busqueda = $this->getRequest()->getPost("criterio");
+
+            if ($busqueda) {
+
+                $DBUsuarios = new Usuarios($this->getServiceLocator()->get("Zend\Db\Adapter"));
+                $usuarios = $DBUsuarios->getSugerenciaUsuariosConsulta();
+
+                if ($usuarios) {
+                    $response = ["status" => "success", "message" => "Datos encontrados", "data" => $usuarios ];
+                }
+                else{
+                    $response = ["status" => "error", "message" => "No se encontraron datos", "data" => null ];
+                }
+            }
+            else{
+                $response = ["status" => "error", "message" => "No se recibieron parámetros", "data" => null ];
+            }
+            $view = new ViewModel(["Json" => json_encode( $response )]);
+            $view->setTemplate("citas/index/json");
+            $view->setTerminal(true);
+            return $view;
+        }
+        return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . "/");
+    }
+
+    //CONTROLLER sugerenciausuariosconsulta
+    public function sugerenciausuarioslistaAction(){
+        $identify = $this->auth->getStorage()->read();
+        if ($identify) {
+            $busqueda = $this->getRequest()->getPost("criterio");
+
+            if ($busqueda) {
+
+                $DBUsuarios = new Usuarios($this->getServiceLocator()->get("Zend\Db\Adapter"));
+                $usuarios = $DBUsuarios->getSugerenciaUsuariosConsulta();
+
+                if ($usuarios) {
+                    $response = ["status" => "success", "message" => "Datos encontrados", "data" => $usuarios ];
+                }
+                else{
+                    $response = ["status" => "error", "message" => "No se encontraron datos", "data" => null ];
+                }
+            }
+            else{
+                $response = ["status" => "error", "message" => "No se recibieron parámetros", "data" => null ];
+            }
+            $view = new ViewModel(["Json" => json_encode( $response )]);
+            $view->setTemplate("citas/index/json");
+            $view->setTerminal(true);
+            return $view;
+        }
+        return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . "/");
+    }
+
+
 }

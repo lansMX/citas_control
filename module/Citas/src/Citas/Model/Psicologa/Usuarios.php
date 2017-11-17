@@ -49,6 +49,19 @@ class Usuarios extends TableGateway
         return $this->adapter->query($sqlUsuarios, Adapter::QUERY_MODE_EXECUTE)->toArray();
     } 
 
+    public function getListaSugerenciaUsuarios($criterio){
+        $criterio = trim($criterio);
+        $sqlUsuarios = "SELECT idTab_Usuario as idUsuario, concat(Nombre, ' ', Apellidos) as nombreCompleto, fechaNacimiento as fechaNaciemiento, Foto as foto FROM tab_usuarios WHERE Nombre like '%${'criterio'}%' || Apellidos like '%${'criterio'}%' LIMIT 15;";
+        return $this->adapter->query($sqlUsuario, Adapter::QUERY_MODE_EXECUTE)->toArray();
+    }
+
+
+    public function getSugerenciaUsuariosConsulta($criterio){
+        $criterio = trim($criterio);
+        $sqlUsuarios = "SELECT idTab_Usuario as idUsuario, concat(Nombre, ' ', Apellidos) as nombreCompleto, fechaNacimiento as fechaNaciemiento FROM tab_usuarios WHERE Nombre like '%${'criterio'}%' || Apellidos like '%${'criterio'}%' LIMIT 5;";
+        return $this->adapter->query($sqlUsuarios, Adapter::QUERY_MODE_EXECUTE)->toArray();
+    }
+
 
     /* Pacientes*/
     public function getAllPacientes(){
