@@ -139,23 +139,23 @@ div#form-tratamiento > input#terminarCita {
 	<div id="datos-tratamiento" class="step_4"></div>
 
 	<div id="formularios">
-		<div id="form-datos-paciente" class="div-form enable">
-			<h4>Datos del paciente</h4>
-			<form id="datos-paciente" class="form-consulta">
+		<div id="div-datos-paciente" class="div-form enable">
+			<h4>Datos del paciente</h4><div class="errorMessage" style="display:none;color:rgb(245,35,35);font-size:1em;">Mensaje de error</div>
+			<form id="form-datos-paciente" class="form-consulta" method="POST" action="guardardatospersonales">
 				<div class="group">      
-			      <input type="text" name="nombrePacinte" id="nombrePacinte" required>
+			      <input type="text" name="nombrePaciente" id="nombrePaciente" required>
 			      <span class="highlight"></span>
 			      <span class="bar"></span>
 			      <label>Nombre</label>
 			    </div>
 			    <div class="group">      
-			      <input type="text" name="nombrePacinte" id="nombrePacinte" required>
+			      <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')" name="fechaNacimiento" id="fechaNacimiento" required>
 			      <span class="highlight"></span>
 			      <span class="bar"></span>
-			      <label>Edad</label>
+			      <label>Fecha de nacimiento</label>
 			    </div>
 			    <div class="group">      
-			      <input type="text" name="nombrePacinte" id="nombrePacinte" required>
+			      <input type="text" name="alergias" id="alergias" required>
 			      <span class="highlight"></span>
 			      <span class="bar"></span>
 			      <label>Alergias</label>
@@ -163,8 +163,8 @@ div#form-tratamiento > input#terminarCita {
 			</form>
 		</div>
 		<div id="form-patologia" class="div-form disable">
-			<h4>Síntomas</h4>
-			<form id="patologia" class="form-consulta">
+			<h4>Síntomas</h4><div class="errorMessage" style="display:none;color:rgb(245,35,35);font-size:1em;">Mensaje de error</div>
+			<form id="form-patologia" class="form-consulta" method="POST" action="guardarsintomas">
 				<div class="groupo-consulta">
 					<label>Síntomas</label>&nbsp<span>+</span><br>
 					<input type="text" name="sintomas">
@@ -176,8 +176,8 @@ div#form-tratamiento > input#terminarCita {
 			</form>
 		</div>
 		<div id="form-procedimientos" class="div-form disable">
-			<h4>Revisión</h4>
-			<form id="procedimientos" class="form-consulta">
+			<h4>Revisión</h4><div class="errorMessage" style="display:none;color:rgb(245,35,35);font-size:1em;">Mensaje de error</div>
+			<form id="form-revision" class="form-consulta" method="POST" action="guardarrevision">
 				<div class="group">      
 			      <input type="text" name="nombrePacinte" id="nombrePacinte" required>
 			      <span class="highlight"></span>
@@ -193,8 +193,8 @@ div#form-tratamiento > input#terminarCita {
 			</form>
 		</div>
 		<div id="form-tratamiento" class="div-form disable">
-			<h4>Tratamiento</h4>
-			<form id="tratamiento" class="form-consulta">
+			<h4>Tratamiento</h4><div class="errorMessage" style="display:none;color:rgb(245,35,35);font-size:1em;">Mensaje de error</div>
+			<form id="form-tratamiento" class="form-consulta" method="POST" action="guardartratamiento">
 				<div class="group">      
 			      <input type="text" name="nombrePacinte" id="nombrePacinte" required>
 			      <span class="highlight"></span>
@@ -227,127 +227,130 @@ div#form-tratamiento > input#terminarCita {
 	*   Trigger animaciones js  	*
 	*-------------------------------*/
 
-	$('#terminarCita').on('click', (event) => {
-		guardarDatosPersonales();
-		guardarSintomas();
-		guardarTratamiento();
-		guardarConsulta();
-	});
-	
-	/* Opciones de desplazamiento formularios */
-    $("#opcion-prev").click(() => {
-    	// Desplaza seccion formulario, 
-    	// regresa index del formulario actual
-    	var formActual = prevForm();
-    	// Mueve el progressbar
-    	move("prev", formActual);
-    });
-    
-    $("#opcion-sig").click(() => {
-    	// Desplaza seccion formulario, 
-    	// regresa index del formulario actual
-    	var formActual = nextForm();
-    	// Mueve el progressbar
-    	move("next", formActual);
-    });
+		$('#terminarCita').on('click', (event) => {
+			guardarDatosPersonales();
+			guardarSintomas();
+			guardarTratamiento();
+			guardarConsulta();
+		});
+		
+		/* Opciones de desplazamiento formularios */
+	    $("#opcion-prev").click(() => {
+	    	// Desplaza seccion formulario, 
+	    	// regresa index del formulario actual
+	    	var formActual = prevForm();
+	    	// Mueve el progressbar
+	    	move("prev", formActual);
+	    });
+	    
+	    $("#opcion-sig").click(() => {
+	    	// Desplaza seccion formulario, 
+	    	// regresa index del formulario actual
+	    	var formActual = nextForm();
+	    	// Mueve el progressbar
+	    	move("next", formActual);
+	    });
 
     /*------------------------------*
 	*   	 Funciones ajax       	*
 	*-------------------------------*/	
 
-    function guardarDatosPersonales(){
-    	$.ajax({
-    		method : 'POST',
-    		url : 'guardardatosPersonales',
-    		dataType : 'json',
-    		data : $('#form').serialize(),
-    		success : (result) => {
-    			console.log(result);
-    		}
-    	});
-    }
+	    function guardarDatosPersonales(){
+	    	$.ajax({
+	    		method : 'POST',
+	    		url : 'guardardatospersonales',
+	    		dataType : 'json',
+	    		data : $('#form-datos-paciente').serialize(),
+	    		success : (result) => {
+	    			console.log(result);
+	    			$(".errorMessage").html(result.message).show().delay(1500).fadeOut();
+	    		}
+	    	});
+	    }
 
-    function guardarSintomas(){
-    	$.ajax({
-    		method : 'POST',
-    		url : 'guardarsintomas',
-    		dataType : 'json',
-    		data : $('#form').serialize(),
-    		success : (result) => {
-    			console.log(result);
-    		}
-    	});
-    }
+	    function guardarSintomas(){
+	    	$.ajax({
+	    		method : 'POST',
+	    		url : 'guardarsintomas',
+	    		dataType : 'json',
+	    		data : $('#form-patologia').serialize(),
+	    		success : (result) => {
+	    			console.log(result);
+	    			$(".errorMessage").html(result.message).show().delay(1500).fadeOut();
+	    		}
+	    	});
+	    }
 
-    function guardarConsulta(){
-    	$.ajax({
-    		method : 'POST',
-    		url : 'guardarconsulta',
-    		dataType : 'json',
-    		data : $('#form').serialize(),
-    		success : (result) => {
-    			console.log(result);
-    		}
-    	});
-    }
+	    function guardarConsulta(){
+	    	$.ajax({
+	    		method : 'POST',
+	    		url : 'guardarrevision',
+	    		dataType : 'json',
+	    		data : $('#form-revision').serialize(),
+	    		success : (result) => {
+	    			console.log(result);
+	    			$(".errorMessage").html(result.message).show().delay(1500).fadeOut();
+	    		}
+	    	});
+	    }
 
-    function guardarTratamiento(){
-    	$.ajax({
-    		method : 'POST',
-    		url : 'guardartratamiento',
-    		dataType : 'json',
-    		data : $('#form').serialize(),
-    		success : (result) => {
-    			console.log(result);
-    		}
-    	});
-    }
+	    function guardarTratamiento(){
+	    	$.ajax({
+	    		method : 'POST',
+	    		url : 'guardartratamiento',
+	    		dataType : 'json',
+	    		data : $('#form-tratamiento').serialize(),
+	    		success : (result) => {
+	    			console.log(result);
+	    			$(".errorMessage").html(result.message).show().delay(1500).fadeOut();
+	    		}
+	    	});
+	    }
 
-    $("#nombrePacinte").on('keypress', (event) => {
-    	console.log(event.which);
-    });
-
+	    $("#form-tratamiento").on('keypress', (event) => {
+	    	console.log(event.which);
+	    });
 
    	/*---------------*
 	* Animaciones js *
 	*----------------*/
 
-    /*-- Seccion previa --*/
-    function prevForm(){
-    	// Forzoso clase .div-form.enable y su estructura
-    	if( $(".div-form.enable").index() > 0){
-    		var prev = $(".div-form.enable").prev();
-    	}
-    	else{
-    		var prev = $(".div-form.enable").parent().children()[3];
-    	}
-    	$(".div-form.enable").hide('slow');
-		$(".div-form.enable").removeClass('enable');
-		$(prev).addClass('enable').show('slow');
-		$(prev).removeClass('disable');
-		var formularioActivo = $(prev).index();
-		return formularioActivo;
-    }
+	    /*-- Seccion previa --*/
+	    function prevForm(){
+	    	// Forzoso clase .div-form.enable y su estructura
+	    	if( $(".div-form.enable").index() > 0){
+	    		var prev = $(".div-form.enable").prev();
+	    	}
+	    	else{
+	    		var prev = $(".div-form.enable").parent().children()[3];
+	    	}
+	    	$(".div-form.enable").hide('slow');
+			$(".div-form.enable").removeClass('enable');
+			$(prev).addClass('enable').show('slow');
+			$(prev).removeClass('disable');
+			var formularioActivo = $(prev).index();
+			return formularioActivo;
+	    }
 
-    /*-- Seccion Siguiente --*/
-    function nextForm(){
-    	if( $(".div-form.enable").index() < 3){
-    		var next = $(".div-form.enable").next();
-    	}
-    	else{
-    		var next = $(".div-form.enable").parent().children()[0];
-    	}
-    	$(".div-form.enable").hide('slow');
-		$(".div-form.enable").removeClass('enable');
-		$(next).addClass('enable').show('slow');
-		$(next).removeClass('disable');
-		var formularioActivo = $(next).index();
-		return formularioActivo;
-    }
+	    /*-- Seccion Siguiente --*/
+	    function nextForm(){
+	    	if( $(".div-form.enable").index() < 3){
+	    		var next = $(".div-form.enable").next();
+	    	}
+	    	else{
+	    		var next = $(".div-form.enable").parent().children()[0];
+	    	}
+	    	$(".div-form.enable").hide('slow');
+			$(".div-form.enable").removeClass('enable');
+			$(next).addClass('enable').show('slow');
+			$(next).removeClass('disable');
+			var formularioActivo = $(next).index();
+			return formularioActivo;
+	    }
 
-    /*-- Movimiento del progressbar --*/
-    function move(move, limit) {
-      	limit = (parseInt((parseInt(limit) + 1) * 19.55));
-      	$("#myBar").animate({width : limit + '%'}, 'slow');
-    }
+	    /*-- Movimiento del progressbar --*/
+	    function move(move, limit) {
+	      	limit = (parseInt((parseInt(limit) + 1) * 19.55));
+	      	$("#myBar").animate({width : limit + '%'}, 'slow');
+	    }
 </script>

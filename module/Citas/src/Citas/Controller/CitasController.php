@@ -442,5 +442,149 @@ class CitasController extends AbstractActionController
         return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . "/");
     }
 
+    /**
+    *  Guardar la información del paciente
+    */
+    public function guardardatospersonalesAction(){
+        $identify = $this->auth->getStorage()->read();
+        if ($identify) {
+            $nombrePaciente = $this->getRequest()->getPost("nombrePaciente");
+            $fechaNacimiento = $this->getRequest()->getPost("fechaNacimiento");
+            $alergias = $this->getRequest()->getPost("alergias");
+
+            if ($busqueda) {
+                try {
+                    $DBUsuarios = new Usuarios($this->getServiceLocator()->get("Zend\Db\Adapter"));
+                    $usuarios = $DBUsuarios->getSugerenciaUsuariosConsulta();
+
+                    if ($usuarios) {
+                        $response = ["status" => "success", "message" => "Datos encontrados", "data" => $usuarios ];
+                    }
+                    else{
+                        $response = ["status" => "error", "message" => "No se encontraron datos", "data" => null ];
+                    }
+                } catch (Exception $e) {
+                    $response = ["status" => "error", "message" => "No hubo ninguna conexión a la BD", "data" => "Error : " . $e->getMessage()];
+                }
+            }
+            else{
+                $response = ["status" => "error", "message" => "No se recibieron parámetros", "data" => null ];
+            }
+            $view = new ViewModel(["Json" => json_encode( $response )]);
+            $view->setTemplate("citas/index/json");
+            $view->setTerminal(true);
+            return $view;
+        }
+        return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . "/");
+    }
+
+    /**
+    *  Guardar los sintomas
+    */
+    public function guardarsintomasAction(){
+        $identify = $this->auth->getStorage()->read();
+        if ($identify) {
+            $nombrePaciente = $this->getRequest()->getPost("nombrePaciente");
+            $fechaNacimiento = $this->getRequest()->getPost("fechaNacimiento");
+            $alergias = $this->getRequest()->getPost("alergias");
+
+            if ($busqueda) {
+                try {
+                    $DBUsuarios = new Usuarios($this->getServiceLocator()->get("Zend\Db\Adapter"));
+                    $usuarios = $DBUsuarios->getSugerenciaUsuariosConsulta();
+
+                    if ($usuarios) {
+                        $response = ["status" => "success", "message" => "Datos encontrados", "data" => $usuarios ];
+                    }
+                    else{
+                        $response = ["status" => "error", "message" => "No se encontraron datos", "data" => null ];
+                    }
+                } catch (Exception $e) {
+                    $response = ["status" => "error", "message" => "No hubo ninguna conexión a la BD", "data" => "Error : " . $e->getMessage()];
+                }
+            }
+            else{
+                $response = ["status" => "error", "message" => "No se recibieron parámetros", "data" => null ];
+            }
+            $view = new ViewModel(["Json" => json_encode( $response )]);
+            $view->setTemplate("citas/index/json");
+            $view->setTerminal(true);
+            return $view;
+        }
+        return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . "/");
+    }
+
+    /**
+    *  Guardar los sintomas
+    */
+    public function guardarrevisionAction(){
+        $identify = $this->auth->getStorage()->read();
+        if ($identify) {
+            $nombrePaciente = $this->getRequest()->getPost("nombrePaciente");
+            $fechaNacimiento = $this->getRequest()->getPost("fechaNacimiento");
+            $alergias = $this->getRequest()->getPost("alergias");
+
+            if ($busqueda) {
+                try {
+                    $DBUsuarios = new Usuarios($this->getServiceLocator()->get("Zend\Db\Adapter"));
+                    $usuarios = $DBUsuarios->getSugerenciaUsuariosConsulta();
+
+                    if ($usuarios) {
+                        $response = ["status" => "success", "message" => "Datos encontrados", "data" => $usuarios ];
+                    }
+                    else{
+                        $response = ["status" => "error", "message" => "No se encontraron datos", "data" => null ];
+                    }
+                } catch (Exception $e) {
+                    $response = ["status" => "error", "message" => "No hubo ninguna conexión a la BD", "data" => "Error : " . $e->getMessage()];
+                }
+            }
+            else{
+                $response = ["status" => "error", "message" => "No se recibieron parámetros", "data" => null ];
+            }
+            $view = new ViewModel(["Json" => json_encode( $response )]);
+            $view->setTemplate("citas/index/json");
+            $view->setTerminal(true);
+            return $view;
+        }
+        return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . "/");
+    }
+
+    /**
+    *  Guardar los sintomas
+    */
+    public function guardartratamientoAction(){
+        $identify = $this->auth->getStorage()->read();
+        if ($identify) {
+            $nombrePaciente = $this->getRequest()->getPost("nombrePaciente");
+            $fechaNacimiento = $this->getRequest()->getPost("fechaNacimiento");
+            $alergias = $this->getRequest()->getPost("alergias");
+
+            if ($busqueda) {
+                try {
+                    $DBUsuarios = new Usuarios($this->getServiceLocator()->get("Zend\Db\Adapter"));
+                    $usuarios = $DBUsuarios->getSugerenciaUsuariosConsulta();
+
+                    if ($usuarios) {
+                        $response = ["status" => "success", "message" => "Datos encontrados", "data" => $usuarios ];
+                    }
+                    else{
+                        $response = ["status" => "error", "message" => "No se encontraron datos", "data" => null ];
+                    }
+                } catch (Exception $e) {
+                    $response = ["status" => "error", "message" => "No hubo ninguna conexión a la BD", "data" => "Error : " . $e->getMessage()];
+                }
+            }
+            else{
+                $response = ["status" => "error", "message" => "No se recibieron parámetros", "data" => null ];
+            }
+            $view = new ViewModel(["Json" => json_encode( $response )]);
+            $view->setTemplate("citas/index/json");
+            $view->setTerminal(true);
+            return $view;
+        }
+        return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . "/");
+    }
+
 
 }
